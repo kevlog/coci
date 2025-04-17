@@ -1,0 +1,22 @@
+# Ignore Python cache files
+__pycache__/
+*.pyc
+
+# Ignore environment config
+.env
+
+# Ignore log files
+*.log
+
+# Ignore executable binaries
+*.exe
+
+# Ignore temporary/null files
+null
+
+# VSCode settings (opsional jika kamu pakai VSCode)
+.vscode/
+
+# Byte-compiled / optimized / DLL files
+*.pyd
+*.pyo
