@@ -10,6 +10,7 @@ __pycache__/
 
 # Ignore executable binaries
 *.exe
+!msedgedriver.exe
 
 # Ignore temporary/null files
 null
