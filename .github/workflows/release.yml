@@ -1,10 +1,5 @@
 name: Release Workflow
 
-permissions:
-  contents: write # to be able to publish a GitHub release
-  issues: write # to be able to comment on released issues
-  pull-requests: write # to be able to comment on released pull requests
-
 on:
   push:
     tags:
@@ -13,6 +8,7 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+
     steps:
       # Checkout repository
       - name: Checkout repository
@@ -30,14 +26,38 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Generate changelog
+      # Generate Changelog
       - name: Generate Changelog
         run: |
+          # Buat file changelog.txt
           echo "### Changelog" > changelog.txt
           echo "" >> changelog.txt
-          git log -n 10 --pretty=format:"- %s" >> changelog.txt
 
-      # Create GitHub release
+          # Ambil semua tag dan urutkan berdasarkan versi
+          tags=$(git tag --sort=version:refname)
+
+          # Loop untuk setiap tag
+          previous_tag=""
+          for tag in $tags; do
+            if [ -n "$previous_tag" ]; then
+              echo "## $tag" >> changelog.txt
+              echo "Changes since $previous_tag:" >> changelog.txt
+              git log $previous_tag..$tag --pretty=format:"- %s" >> changelog.txt
+              echo "" >> changelog.txt
+            fi
+            # Set tag sebelumnya ke tag yang sedang diproses
+            previous_tag=$tag
+          done
+
+          # Jika ada tag terakhir, ambil commit dari tag terakhir hingga HEAD
+          if [ -n "$previous_tag" ]; then
+            echo "## $previous_tag" >> changelog.txt
+            echo "Changes since $previous_tag:" >> changelog.txt
+            git log $previous_tag..HEAD --pretty=format:"- %s" >> changelog.txt
+            echo "" >> changelog.txt
+          fi
+
+      # Create GitHub Release
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
