@@ -14,7 +14,7 @@ Otomatisasi absensi PeoplesHR via browser Microsoft Edge.
 
 ## 🚀 Cara Menggunakan
 
-1. Clone atau download repo ini.
+1. Clone repo ini pake git clone
 2. **Pindahkan folder repo ke `C:\`**  
    → Supaya kamu cukup isi username dan password saja (tidak perlu isi path Python script).
 3. Buka folder repo tersebut, lalu **buat shortcut file `run_auto_coci.bat`** ke lokasi mana pun (misalnya: Desktop).  
@@ -36,8 +36,9 @@ Otomatisasi absensi PeoplesHR via browser Microsoft Edge.
 - Masih ada beberapa validasi yang perlu ditambahkan.
 - Kalo mau ubah username dan pass peopleshr bisa di file .env ya (sementara)
 - File null tergenerate karena `chcp 65001 >null` di file bat
-- Di masa depan, akan dicoba tambahkan fitur auto-install Python (biar makin praktis).
-- Untuk saat ini, cukup segini dulu ya... Udah ngantuk banget, baru sadar ternyata udah jam setengah 3 pagi coy hahaha
+- Udah ada fitur auto-install Python (biar makin praktis).
+- Masih harus pake git clone buat dapetin aplikasinya, gatau kenapa kalo dari Download Zip di tombol Code warna hijau itu, ataupun dari Download Zip di Release, dia ga bakal bisa dibuka, aneh wkwk
+- Segini dulu aja yak..
 
 ---
 
