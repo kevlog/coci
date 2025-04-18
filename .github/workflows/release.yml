@@ -1,0 +1,45 @@
+name: Release Workflow
+
+on:
+  push:
+    tags:
+      - 'v*'  # Workflow ini akan berjalan ketika tag dengan awalan 'v' di-push
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'  # Versi fleksibel, gunakan '3.x' jika tidak butuh versi spesifik
+
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Generate changelog
+      - name: Generate Changelog
+        run: |
+          echo "### Changelog" > changelog.txt
+          echo "" >> changelog.txt
+          git log -n 10 --pretty=format:"- %s" >> changelog.txt
+
+      # Create GitHub release
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          body_path: changelog.txt
+          files: |
+            changelog.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
