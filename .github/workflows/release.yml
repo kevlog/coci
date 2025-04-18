@@ -1,70 +1,16 @@
-name: Release Workflow
+name: Release Please
 
 on:
   push:
-    tags:
-      - 'v*'  # Workflow ini akan berjalan ketika tag dengan awalan 'v' di-push
+    branches:
+      - main
 
 jobs:
-  release:
+  release-please:
     runs-on: ubuntu-latest
-
     steps:
-      # Checkout repository
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      # Set up Python
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Release Please
+        uses: google-github-actions/release-please-action@v3
         with:
-          python-version: '3.x'  # Versi fleksibel, gunakan '3.x' jika tidak butuh versi spesifik
-
-      # Install dependencies
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      # Generate Changelog
-      - name: Generate Changelog
-        run: |
-          # Buat file changelog.txt
-          echo "### Changelog" > changelog.txt
-          echo "" >> changelog.txt
-
-          # Ambil semua tag dan urutkan berdasarkan versi
-          tags=$(git tag --sort=version:committerdate)
-
-          # Loop untuk setiap tag
-          previous_tag=""
-          for tag in $tags; do
-            if [ -n "$previous_tag" ]; then
-              echo "## $tag" >> changelog.txt
-              echo "Changes since $previous_tag:" >> changelog.txt
-              git log $previous_tag..$tag --pretty=format:"- %s" >> changelog.txt
-              echo "" >> changelog.txt
-            fi
-            # Set tag sebelumnya ke tag yang sedang diproses
-            previous_tag=$tag
-          done
-
-          # Jika ada tag terakhir, ambil commit dari tag terakhir hingga HEAD
-          if [ -n "$previous_tag" ]; then
-            echo "## $previous_tag" >> changelog.txt
-            echo "Changes since $previous_tag:" >> changelog.txt
-            git log $previous_tag..HEAD --pretty=format:"- %s" >> changelog.txt
-            echo "" >> changelog.txt
-          fi
-
-      # Create GitHub Release
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          name: Release ${{ github.ref_name }}
-          tag_name: ${{ github.ref_name }}
-          body_path: changelog.txt
-          files: |
-            changelog.txt
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          release-type: simple
+          package-name: coci
