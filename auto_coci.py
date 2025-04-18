@@ -59,7 +59,7 @@ options.add_argument("start-maximized")
 
 # === Fungsi utama ===
 def main():
-    print("\n🚀Menjalankan Auto Clock-In / Clock-Out ...🧑‍💻")
+    print("\n[INFO] ⌚ Menjalankan Auto Clock-In / Clock-Out ...")
     # Inisialisasi driver
     service = EdgeService(executable_path="msedgedriver.exe")
     driver = webdriver.Edge(service=service, options=options)
@@ -67,51 +67,52 @@ def main():
     wait = WebDriverWait(driver, 15)
 
     try:
-        print("🚀 Membuka halaman login...")
+        print("\n[INFO] 🚀 Membuka halaman login...")
         driver.get("https://metrodata.peopleshr.com")
     except Exception as e:
         error_str = str(e)
         if "net_error -101" in error_str or "SSL" in error_str:
-            print("❌ Gagal melakukan koneksi aman (SSL handshake failed).")
+            print("❌ Gagal melakukan koneksi aman (SSL handshake failed).\a")
             print("   Coba periksa jaringan, VPN, atau pastikan sertifikat situs valid.")
         else:
-            print("❌ Gagal mengakses situs. Coba periksa:")
+            print("❌ Gagal mengakses situs. Coba periksa:\a")
             print("   - Koneksi internet")
             print("   - VPN atau firewall yang aktif")
             print("   - Sertifikat SSL situs")
-        print(f"🔍 Detail teknis: {e}")
+        print(f"[INFO] 🔍 Detail teknis: {e}")
         driver.quit()
         exit()
 
     try:
-        print("⌨️ Mengisi username...")
+        print("[INFO] ⌨️ Mengisi username...")
         username_input = wait.until(EC.presence_of_element_located((By.ID, "txtusername")))
         username_input.send_keys(username)
     except Exception:
-        print("❌ Gagal menemukan field username. Mungkin ID-nya berubah?")
+        print("[ERR]  ❌ Gagal menemukan field username. Mungkin ID-nya berubah?\a")
         driver.quit()
         exit()
 
     try:
-        print("🔒 Mengisi password...")
+        print("[INFO] 🔒 Mengisi password...")
         password_input = driver.find_element(By.ID, "txtpassword")
         password_input.send_keys(password)
     except Exception:
-        print("❌ Gagal menemukan field password.")
+        print("[ERR]  ❌ Gagal menemukan field password.\a")
         driver.quit()
         exit()
 
     try:
-        print("➡️ Menekan tombol login...")
+        print("[INFO] ➡️ Menekan tombol login...")
         login_button = driver.find_element(By.ID, "btnsubmit")
         login_button.click()
     except Exception:
-        print("❌ Gagal klik tombol login.")
+        print("\a")
+        print("[ERR]  ❌ Gagal klik tombol login.")
         driver.quit()
         exit()
 
     try:
-        print("🕵️ Menunggu elemen Clock In/Out...")
+        print("[INFO] 🕵️ Menunggu elemen Clock In/Out...")
         man_swipe = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "ManSwipe")))
         
         # Scroll biar elemen terlihat di layar
@@ -119,33 +120,51 @@ def main():
         time.sleep(1)  # Delay dikit biar efek scroll kelihatan
         
         # man_swipe.click()
-        print("✅ Berhasil klik Tombol Clock In/Out!")
+        print("[INFO] ✅ Berhasil klik Tombol Clock In/Out!")
 
-        print("🧹 Menutup browser dalam 2 detik", end="", flush=True)
+        print("[INFO] 🧹 Menutup browser dalam 3 detik", end="", flush=True)
         # Animasi titik-titik selama 1,5 detik
         for _ in range(3):
             time.sleep(0.5)
             sys.stdout.write(".")
             sys.stdout.flush()
-        # Ada jeda 0,5 setelah titik terakhir biar pas 2 detik
-        time.sleep(0.5)
+        # Ada jeda 1,5 setelah titik terakhir biar pas 3 detik
+        time.sleep(1.5)
 
-        print("\n✅ Browser ditutup. Sampai jumpa!")
+        print("\n[INFO] ✅ Browser ditutup. Sampai jumpa!")
         driver.quit()
 
-        print("🕒 Menutup aplikasi dalam 3 detik", end="", flush=True)
-        # Animasi titik-titik selama 1,5 detik
-        for _ in range(3):
-            time.sleep(0.5)
-            sys.stdout.write(".")
+        for i in range(3, 0, -1):
+            sys.stdout.write(f"\r[INFO] 🕒 Menutup aplikasi dalam {i} detik" + "." * (4 - i))
             sys.stdout.flush()
+            time.sleep(1)
+            
+        # print("[INFO] 🕒 Menutup aplikasi dalam 3 detik", end="", flush=True)
+        # Animasi titik-titik selama 1,5 detik
+        # for _ in range(3):
+        #     time.sleep(0.5)
+        #     sys.stdout.write(".")
+        #     sys.stdout.flush()
         # Jeda ladgi 1,5 detik biar pas 3 detik
         time.sleep(1.5)
         exit()
         
     except Exception:
-        print("❌ Gagal menemukan atau klik elemen 'ManSwipe' / tombol Clock In/Out. Pastikan login sukses.")
+        print("[ERR]  ❌ Gagal menemukan atau klik elemen 'ManSwipe' / tombol Clock In/Out. Pastikan login sukses.\a")
         driver.quit()
+        # Countdown dengan animasi titik
+        for i in range(3, 0, -1):
+            sys.stdout.write(f"\r[INFO] 🕒 Menutup aplikasi dalam {i} detik" + "." * (4 - i))
+            sys.stdout.flush()
+            time.sleep(1)
+        # print("🕒 Menutup aplikasi dalam 3 detik", end="", flush=True)
+        # Animasi titik-titik selama 1,5 detik
+        # for _ in range(3):
+        #     time.sleep(0.5)
+        #     sys.stdout.write(".")
+        #     sys.stdout.flush()
+        # Jeda ladgi 1,5 detik biar pas 3 detik
+        # time.sleep(1.5)
         exit()
 
     time.sleep(5)
@@ -156,15 +175,16 @@ def main():
 try:
     main()
 except KeyboardInterrupt:
-    print("\n⚠️  Deteksi interupsi dari keyboard (Ctrl+C).")
+    print("\n[WARN] ⚠️  Deteksi interupsi dari keyboard (Ctrl+C).")
     try:
         confirm = input("❓ Yakin ingin membatalkan proses? (y/n): ").lower()
         if confirm == 'y':
-            print("⛔ Proses dibatalkan oleh pengguna.")
+            print("\a")
+            print("[WARN] ⛔ Proses dibatalkan oleh pengguna.")
             exit()
         else:
-            print("✅ Proses akan dilanjutkan...\n")
+            print("[INFO] ✅ Proses akan dilanjutkan...\n")
             main()  # Jalankan ulang
     except Exception:
-        print("❌ Terjadi kesalahan saat konfirmasi. Keluar.")
+        print("[ERR]  ❌ Terjadi kesalahan saat konfirmasi. Keluar.")
         exit()

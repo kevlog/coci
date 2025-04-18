@@ -19,16 +19,16 @@ def check_and_install_packages(required_packages):
 
     # Menampilkan daftar paket yang hilang ke pengguna
     if missing_packages:
-        print("\n📦 Daftar paket yang belum terinstal:")
+        print("\n[INFO] 📦 Daftar paket yang belum terinstal:\a")
         for package in missing_packages:
             print(f"  - {package}")
-        print("\n🔧 Memulai instalasi...")
+        print("\n[INFO] 🔧 Memulai instalasi...")
 
         # Instalasi paket yang hilang
         for package in missing_packages:
-            print(f"📦 Installing package: {package}")
+            print(f"[INFO] 📦 Installing package: {package}")
             subprocess.check_call([sys.executable, "-m", "pip", "install", package])
     else:
-        print("✅ Semua paket sudah terinstal!")
+        print("[INFO] ✅ Semua paket sudah terinstal!")
 
-    print("🎉 Proses instalasi selesai!")
+    print("[INFO] 🎉 Proses instalasi selesai!")

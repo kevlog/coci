@@ -1,6 +1,6 @@
 @echo off
 setlocal enabledelayedexpansion
-
+powershell -c [console]::beep()
 REM Set the font color to green
 color a
 
@@ -20,7 +20,13 @@ echo "== |  _  | | | | __/ _ \  | |   | | | | |     | |   =="
 echo "== | | | | |_| | || (_) | | \__/\ \_/ / \__/\_| |_  =="
 echo "== \_| |_/\__,_|\__\___/   \____/\___/ \____/\___/  =="
 echo ========================================================
+echo                  👨‍💻 Author : kevlog
+echo          🐙 GitHub : https://github.com/kevlog/
+echo ========================================================
 echo.
+
+REM running proses system checking
+call checking.bat
 
 REM Set direktori lokasi skrip .bat ini dijalankan
 set "currentDir=%~dp0"
@@ -38,14 +44,16 @@ if exist "%currentDir%.env" (
 )
 
 REM Jika belum ada juga, lanjut buat file .env
-echo ⚠️  File .env tidak ditemukan!
-echo 🛠️  Membuat file .env baru...
+echo 
+echo [WARN] ⚠️  File .env tidak ditemukan!
+echo [INFO] 🛠️  Membuat file .env baru...
 echo.
+timeout /t 1 >nul
 
 REM Ambil input dari user
 set "separator========================================================="
 echo %separator%
-echo Silakan isi data berikut untuk konfigurasi awal:
+echo 📝 Silakan isi data berikut untuk konfigurasi .env:
 
 echo %separator%
 
@@ -53,6 +61,7 @@ echo %separator%
 set "inputUser="
 set /p "inputUser=👤 Masukkan Username Akun PeoplesHR: "
 if "%inputUser%"=="" (
+    echo 
     echo ❌ ERROR: Username tidak boleh kosong!
     goto getUserInput
 )
@@ -63,6 +72,7 @@ echo %separator%
 set "inputPass="
 set /p "inputPass=🔒 Masukkan Password Akun PeoplesHR: "
 if "%inputPass%"=="" (
+    echo 
     echo ❌ ERROR: Password tidak boleh kosong!
     goto getPasswordInput
 )
@@ -72,7 +82,7 @@ echo %separator%
 REM Cek apakah C:\coci\auto_coci.py ada
 if exist "C:\coci\auto_coci.py" (
     set "inputScript=C:\coci"
-    echo File auto_coci.py ditemukan di C:\coci. Menetapkan SCRIPT_PATH ke C:\coci\auto_coci.py.
+    echo [INFO] ✅ File auto_coci.py ditemukan di C:\coci. Menetapkan SCRIPT_PATH ke C:\coci\auto_coci.py.
     goto mainProgram
 ) else (
     goto getScriptPath
@@ -82,16 +92,20 @@ if exist "C:\coci\auto_coci.py" (
 set "inputScript="
 set /p "inputScript=📁 Masukkan DIREKTORI tempat auto_coci.py (contoh: C:\Users\ASUS-TUF\Desktop\coci): "
 
+echo %separator%
+
 REM Trim spasi dari input (optional tapi bagus)
 for /f "tokens=* delims= " %%i in ("%inputScript%") do set "inputScript=%%i"
 
 if "%inputScript%"=="" (
+    echo 
     echo ❌ ERROR: SCRIPT_PATH tidak boleh kosong!
     pause
     goto getScriptPath
 )
 
 if not exist "%inputScript%\auto_coci.py" (
+    echo 
     echo ❌ ERROR: File auto_coci.py tidak ditemukan di path yang diberikan!
     pause
     goto getScriptPath
@@ -115,7 +129,8 @@ REM Tulis ke file .env
     echo SCRIPT_PATH=%fullScriptPath%
 ) > "%envPath%"
 
-echo ✅ File .env berhasil dibuat di: %envPath%
+echo.
+echo [INFO] ✅ File .env berhasil dibuat di: %envPath%
 
 timeout /t 3
 echo.
@@ -123,7 +138,7 @@ echo.
 :run_script
 
 REM Load .env and extract SCRIPT_PATH
-echo 🔄 Mengambil konfigurasi dari: %envPath%
+echo [INFO] 🔄 Mengambil konfigurasi dari: %envPath%
 set "SCRIPT_PATH="
 
 REM Ambil variabel dari file .env
@@ -134,10 +149,11 @@ for /f "usebackq delims=" %%i in (`type "%envPath%"`) do (
 )
 
 REM Debug: Print SCRIPT_PATH sebelum melanjutkan
-echo 📄 File Python akan dijalankan dari: %SCRIPT_PATH%
+echo [INFO] 📄 File Python akan dijalankan dari: %SCRIPT_PATH%
 echo.
 REM Cek apakah SCRIPT_PATH ada di .env dan file-nya valid
 if "%SCRIPT_PATH%"=="" (
+    echo 
     echo ❌ ERROR: SCRIPT_PATH tidak ditemukan di .env!
     pause
     exit /b
@@ -145,15 +161,17 @@ if "%SCRIPT_PATH%"=="" (
 
 REM Cek apakah SCRIPT_PATH valid dan bisa diakses
 if not exist "%SCRIPT_PATH%" (
+    echo 
     echo ❌ ERROR: File tidak ditemukan di path: %SCRIPT_PATH%
-    echo Pastikan path yang kamu masukkan di .env valid dan file .py-nya ada.
+    echo ❗ Pastikan path yang kamu masukkan di .env valid dan file .py-nya ada.
     pause
     exit /b
 )
 
 python "%SCRIPT_PATH%"
 
-echo ✅ Proses selesai.
+echo [INFO] ✅ Proses selesai.
+echo 
 
 REM Menutup CMD
 exit
