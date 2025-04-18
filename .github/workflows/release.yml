@@ -34,7 +34,7 @@ jobs:
           echo "" >> changelog.txt
 
           # Ambil semua tag dan urutkan berdasarkan versi
-          tags=$(git tag --sort=version:refname)
+          tags=$(git tag --sort=version:committerdate)
 
           # Loop untuk setiap tag
           previous_tag=""
