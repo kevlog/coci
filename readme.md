@@ -30,7 +30,7 @@ Otomatisasi absensi PeoplesHR via browser Microsoft Edge.
 ## 📝 Catatan
 
 - Menggunakan browser Microsoft Edge.
-- Harus menginstall `msedgedriver.exe` agar automation bisa berjalan. Udah saya kasih di sini, kalo ga berjalan coba download lagi aja yang terbaru, terus taruh di repo ini. Link tertera di referensi.
+- Harus download dan masukin `msedgedriver.exe` ke repo ini biar automation bisa berjalan. Udah saya kasih di sini, kalo ga berjalan coba download lagi aja yang terbaru, terus taruh di repo ini. Link tertera di referensi.
 - Jika ingin memindahkan `run_auto_coci.bat`, **wajib buat shortcut**, bukan di-*copy* ke tempat lain.
 - Shortcut bisa kamu taruh di mana saja, bahkan bisa diatur agar auto-start saat laptop dinyalakan (belum dites 😅).
 - Masih ada beberapa validasi yang perlu ditambahkan.
