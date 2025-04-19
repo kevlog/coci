@@ -39,7 +39,28 @@ IF %ERRORLEVEL% EQU 0 (
 )
 
 echo [WARN] ❌ Python belum ditemukan!!!
-echo [INFO] 🌐 Memulai proses download dari: %URL%
+echo.
+
+:: Periksa koneksi internet sebelum mengunduh
+:check_internet
+echo [INFO] 🌐 Memeriksa koneksi internet...
+ping -n 1 www.google.com >nul 2>&1
+IF %ERRORLEVEL% NEQ 0 (
+    echo [ERR]  ❌ Tidak ada koneksi internet. Harap periksa koneksi Anda.
+    echo [INFO] 🔄 Mencoba menghubungkan ulang.
+    <nul set /p=[INFO] ⏳ Loading
+    for /l %%i in (1,1,39) do (
+        <nul set /p=.
+        ping -n 1 www.google.com>nul 2>&1
+    )
+    timeout /t 1 >nul
+    echo.
+    echo.
+    goto check_internet
+)
+
+echo [INFO] 🔗 Koneksi internet tersedia!
+echo [INFO] 📡 Memulai proses download dari: %URL%
 echo.
 
 :: Jalankan download di background
@@ -75,6 +96,7 @@ set /a index+=1
 goto loading
 
 :install
+echo.
 echo.
 echo [INFO] ✅ Installer berhasil diunduh.
 echo [INFO] ⚙️ Menjalankan instalasi Python...

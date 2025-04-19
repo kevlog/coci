@@ -66,24 +66,26 @@ def main():
 
     wait = WebDriverWait(driver, 15)
 
-    try:
-        print("\n[INFO] 🚀 Membuka halaman login...")
-        driver.get("https://metrodata.peopleshr.com")
-    except Exception as e:
-        error_str = str(e)
-        if "net_error -101" in error_str or "SSL" in error_str:
-            print("[ERR]  ❌ Gagal melakukan koneksi aman (🔒 SSL handshake failed).\a")
-            print("       🧠 Coba periksa 📶jaringan, 🛡️VPN, atau pastikan 📜sertifikat situs valid.")
-        else:
-            print("[ERR]  ❌ Gagal mengakses situs. 🌐\a")
-            print("       🔍 Coba periksa:")
-            print("         - 📶 Koneksi internet")
-            print("         - 🛡️ VPN atau firewall yang aktif")
-            print("         - 📜 Sertifikat SSL situs")
-        print(f"[INFO] 🔍 Detail teknis: {e}")
-        driver.quit()
-        exit()
-
+    while True:
+        try:
+            print("\n[INFO] 🚀 Membuka halaman login...")
+            driver.get("https://metrodata.peopleshr.com")
+            break  # Keluar dari loop jika berhasil membuka halaman
+        except Exception as e:
+            error_str = str(e)
+            if "net_error -101" in error_str or "SSL" in error_str:
+                print("[ERR]  ❌ Gagal melakukan koneksi aman (🔒 SSL handshake failed).\a")
+                print("       🧠 Coba periksa 📶jaringan, 🛡️VPN, atau pastikan 📜sertifikat situs valid.")
+            else:
+                print("[ERR]  ❌ Gagal mengakses situs. 🌐\a")
+                print("       🔍 Coba periksa:")
+                print("         - 📶 Koneksi internet")
+                print("         - 🛡️ VPN atau firewall yang aktif")
+                print("         - 📜 Sertifikat SSL situs")
+            print(f"[INFO] 🔍 Detail teknis:\n{e}")
+            print("[INFO] 📡 Wah sepertinya tidak ada internet nih.")
+            print("[INFO] 🌐 Coba sambungin ke internet ya, kami akan coba menghubungkan lagi!")
+            time.sleep(3)  # Tunggu 5 detik sebelum mencoba lagi
     try:
         print("[INFO] ⌨️ Mengisi username...")
         username_input = wait.until(EC.presence_of_element_located((By.ID, "txtusername")))

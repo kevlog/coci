@@ -1,7 +1,18 @@
-# package_checker.py
 import subprocess
 import sys
+import socket
+import time
+
 print(f"Using Python at: {sys.executable}")
+
+# Fungsi untuk memeriksa koneksi internet
+def check_internet_connection():
+    try:
+        # Mencoba terhubung ke google.com pada port 80 (HTTP)
+        socket.create_connection(("www.google.com", 80), timeout=5)
+        return True
+    except OSError:
+        return False
 
 # Fungsi untuk memeriksa dan menginstal paket yang hilang
 def install_if_missing(pip_package, import_name=None):
@@ -14,6 +25,15 @@ def install_if_missing(pip_package, import_name=None):
 
 # Fungsi untuk memeriksa dan menginstal semua paket yang diperlukan
 def check_and_install_packages(required_packages):
+    # Memeriksa koneksi internet hingga tersedia
+    while not check_internet_connection():
+        print("\n[ERR]  ❌ Tidak ada koneksi internet. Harap periksa koneksi Anda dan coba lagi.\a")
+        for i in range(10, 0, -1):
+            dot_count = (10 - i) % 3 + 1  # Akan menghasilkan 1, 2, 3, lalu ulang
+            sys.stdout.write(f"\r[INFO] Mencoba menghubungkan ulang dalam {i} detik " + "." * dot_count + "   ")  # Extra spasi utk overwrite
+            sys.stdout.flush()
+            time.sleep(1)
+
     # Memeriksa paket yang hilang
     missing_packages = [package for package, _ in required_packages if install_if_missing(package)]
 
