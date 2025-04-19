@@ -122,7 +122,7 @@ def main():
         driver.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", man_swipe)
         time.sleep(1)  # Delay dikit biar efek scroll kelihatan
         
-        # man_swipe.click()
+        man_swipe.click()
         print("[INFO] ✅ Berhasil klik Tombol Clock In/Out!")
 
         print("[INFO] 🧹 Menutup browser dalam 3 detik", end="", flush=True)
