@@ -1,0 +1,43 @@
+name: approve-please
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  auto-approve:
+    if: |
+      github.event.action != 'closed' &&
+      startsWith(github.head_ref, 'release-please--')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto approve
+        uses: hmarr/auto-approve-action@v3
+        with:
+          github-token: ${{ secrets.RELEASE_TOKEN }}
+
+      - name: Enable auto-merge
+        uses: peter-evans/enable-pull-request-automerge@v2
+        with:
+          token: ${{ secrets.RELEASE_TOKEN }}
+          merge-method: squash
+
+  delete-branch:
+    if: |
+      github.event.pull_request.merged == true &&
+      startsWith(github.head_ref, 'release-please--')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete merged branch
+        uses: dawidd6/action-delete-branch@v3
+        with:
+          github_token: ${{ secrets.RELEASE_TOKEN }}
+          branch: ${{ github.head_ref }}
+          delete-branch: true
+          delete-branch-message: 'Deleting merged branch'
+          delete-branch-comment: 'Deleting merged branch'
+          delete-branch-label: 'Deleting merged branch'
