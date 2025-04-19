@@ -62,7 +62,7 @@ set "inputUser="
 set /p "inputUser=👤 Masukkan Username Akun PeoplesHR: "
 if "%inputUser%"=="" (
     echo 
-    echo ❌ ERROR: Username tidak boleh kosong!
+    echo [ERR]  ❌ ERROR: Username tidak boleh kosong!
     goto getUserInput
 )
 
@@ -73,7 +73,7 @@ set "inputPass="
 set /p "inputPass=🔒 Masukkan Password Akun PeoplesHR: "
 if "%inputPass%"=="" (
     echo 
-    echo ❌ ERROR: Password tidak boleh kosong!
+    echo [ERR]  ❌ ERROR: Password tidak boleh kosong!
     goto getPasswordInput
 )
 
@@ -99,14 +99,14 @@ for /f "tokens=* delims= " %%i in ("%inputScript%") do set "inputScript=%%i"
 
 if "%inputScript%"=="" (
     echo 
-    echo ❌ ERROR: SCRIPT_PATH tidak boleh kosong!
+    echo [ERR]  ❌ ERROR: SCRIPT_PATH tidak boleh kosong!
     pause
     goto getScriptPath
 )
 
 if not exist "%inputScript%\auto_coci.py" (
     echo 
-    echo ❌ ERROR: File auto_coci.py tidak ditemukan di path yang diberikan!
+    echo [ERR]  ❌ ERROR: File auto_coci.py tidak ditemukan di path yang diberikan!
     pause
     goto getScriptPath
 )
@@ -154,7 +154,7 @@ echo.
 REM Cek apakah SCRIPT_PATH ada di .env dan file-nya valid
 if "%SCRIPT_PATH%"=="" (
     echo 
-    echo ❌ ERROR: SCRIPT_PATH tidak ditemukan di .env!
+    echo [ERR]  ❌ ERROR: SCRIPT_PATH tidak ditemukan di .env!
     pause
     exit /b
 )
@@ -162,8 +162,8 @@ if "%SCRIPT_PATH%"=="" (
 REM Cek apakah SCRIPT_PATH valid dan bisa diakses
 if not exist "%SCRIPT_PATH%" (
     echo 
-    echo ❌ ERROR: File tidak ditemukan di path: %SCRIPT_PATH%
-    echo ❗ Pastikan path yang kamu masukkan di .env valid dan file .py-nya ada.
+    echo [ERR]  ❌ ERROR: File tidak ditemukan di path: %SCRIPT_PATH%
+    echo [INFO] ❗ Pastikan path yang kamu masukkan di .env valid dan file .py-nya ada.
     pause
     exit /b
 )

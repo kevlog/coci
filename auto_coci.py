@@ -72,13 +72,14 @@ def main():
     except Exception as e:
         error_str = str(e)
         if "net_error -101" in error_str or "SSL" in error_str:
-            print("❌ Gagal melakukan koneksi aman (SSL handshake failed).\a")
-            print("   Coba periksa jaringan, VPN, atau pastikan sertifikat situs valid.")
+            print("[ERR]  ❌ Gagal melakukan koneksi aman (🔒 SSL handshake failed).\a")
+            print("       🧠 Coba periksa 📶jaringan, 🛡️VPN, atau pastikan 📜sertifikat situs valid.")
         else:
-            print("❌ Gagal mengakses situs. Coba periksa:\a")
-            print("   - Koneksi internet")
-            print("   - VPN atau firewall yang aktif")
-            print("   - Sertifikat SSL situs")
+            print("[ERR]  ❌ Gagal mengakses situs. 🌐\a")
+            print("       🔍 Coba periksa:")
+            print("         - 📶 Koneksi internet")
+            print("         - 🛡️ VPN atau firewall yang aktif")
+            print("         - 📜 Sertifikat SSL situs")
         print(f"[INFO] 🔍 Detail teknis: {e}")
         driver.quit()
         exit()
