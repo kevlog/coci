@@ -110,5 +110,5 @@ echo [INFO] 🔄 Setelah selesai, tekan Enter untuk melanjutkan.
 echo [INFO] 🚀 Jangan lupa buka kembali aplikasi run_auto_coci.bat setelah Python berhasil diinstal.
 pause
 
-:: Tutup CMD yang sekarang
-exit /b
+:: Tutup CMD
+exit
