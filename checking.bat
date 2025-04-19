@@ -110,5 +110,27 @@ echo [INFO] 🔄 Setelah selesai, tekan Enter untuk melanjutkan.
 echo [INFO] 🚀 Jangan lupa buka kembali aplikasi run_auto_coci.bat setelah Python berhasil diinstal.
 pause
 
-:: Tutup CMD yang sekarang
-exit /b
+::: Hapus installer setelah instalasi selesai
+if EXIST "%INSTALLER%" (
+    echo.
+    echo [INFO] 🗑️ Menghapus file installer...
+    del "%INSTALLER%"
+    echo [INFO] ✅ File installer berhasil dihapus.
+    echo.
+) else (
+    echo.
+    echo [ERR] ❌ Gagal menghapus file installer.
+    echo.
+)
+
+::: Hapus file "null" yang mungkin tertinggal
+if EXIST "null" del "null"
+
+pause
+
+:: Tutup CMD setelah instalasi selesai
+echo.
+echo [INFO] ❌ Menutup CMD....
+echo [INFO] 🔒 Terima kasih telah menggunakan aplikasi ini.
+timeout /t 3 >nul
+exit
