@@ -72,10 +72,11 @@ password = os.getenv("MY_PASSWORD")
 
 # === Selenium options ===
 options = Options()
-options.add_argument('--ignore-certificate-errors')
-options.add_argument('--disable-logging')
-options.add_argument('--log-level=3')
-options.add_argument("start-maximized")
+options.add_argument('--ignore-certificate-errors') # Abaikan kesalahan sertifikat
+options.add_argument('--disable-logging') # Disable logging
+options.add_argument('--log-level=3') # Suppress logs
+options.add_argument("start-maximized") # Buka jendela penuh
+options.add_argument('--inprivate') # Mode InPrivate (Incognito)
 
 # === Fungsi utama ===
 def main():
