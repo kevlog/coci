@@ -26,7 +26,7 @@ echo ========================================================
 echo.
 
 REM running proses system checking
-call checking.bat
+call script/checking.bat
 
 REM Set direktori lokasi skrip .bat ini dijalankan
 set "currentDir=%~dp0"
@@ -91,7 +91,8 @@ if exist "C:\coci\auto_coci.py" (
 :getScriptPath
 set "inputScript="
 set /p "inputScript=📁 Masukkan DIREKTORI tempat auto_coci.py (contoh: C:\Users\ASUS-TUF\Desktop\coci): "
-
+REM Hapus tanda '/' di akhir input jika ada
+:: if "%inputScript:~-1%"=="/" set "inputScript=%inputScript:~0,-1%"
 echo %separator%
 
 REM Trim spasi dari input (optional tapi bagus)
@@ -104,7 +105,7 @@ if "%inputScript%"=="" (
     goto getScriptPath
 )
 
-if not exist "%inputScript%\auto_coci.py" (
+if not exist "%inputScript%src\auto_coci.py" (
     echo 
     echo [ERR]  ❌ ERROR: File auto_coci.py tidak ditemukan di path yang diberikan!
     pause
@@ -113,7 +114,7 @@ if not exist "%inputScript%\auto_coci.py" (
 
 :mainProgram
 REM Menentukan path lengkap untuk auto_coci.py
-set "fullScriptPath=%inputScript%\auto_coci.py"
+set "fullScriptPath=%inputScript%src\auto_coci.py"
 
 REM Menentukan direktori tempat file .env akan disimpan
 if exist "C:\coci\auto_coci.py" (

@@ -25,6 +25,7 @@ def install_if_missing(pip_package, import_name=None):
 
 # Fungsi untuk memeriksa dan menginstal semua paket yang diperlukan
 def check_and_install_packages(required_packages):
+    print("\n[INFO] 🔍 Memeriksa paket yang diperlukan...\a")
     # Memeriksa koneksi internet hingga tersedia
     while not check_internet_connection():
         print("\n[ERR]  ❌ Tidak ada koneksi internet. Harap periksa koneksi Anda dan coba lagi.\a")
@@ -35,7 +36,10 @@ def check_and_install_packages(required_packages):
             time.sleep(1)
 
     # Memeriksa paket yang hilang
-    missing_packages = [package for package, _ in required_packages if install_if_missing(package)]
+    missing_packages = []
+    for pip_package, import_name in required_packages:
+        if install_if_missing(pip_package, import_name):
+            missing_packages.append(pip_package)
 
     # Menampilkan daftar paket yang hilang ke pengguna
     if missing_packages:
@@ -46,9 +50,13 @@ def check_and_install_packages(required_packages):
 
         # Instalasi paket yang hilang
         for package in missing_packages:
-            print(f"[INFO] 📦 Installing package: {package}")
-            subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+            try:
+                print(f"[INFO] 📦 Installing package: {package}")
+                subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+                print(f"[INFO] 🎁 Berhasil menginstall package: {package}\n")
+            except subprocess.CalledProcessError as e:
+                print(f"[ERR]  ❌ Gagal menginstal paket '{package}'. Detail: {e}\a")
+                # sys.exit(1)  # Keluar jika ada kegagalan instalasi
     else:
         print("[INFO] ✅ Semua paket sudah terinstal!")
-
-    print("[INFO] 🎉 Proses instalasi selesai!")
+        

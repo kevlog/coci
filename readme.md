@@ -17,13 +17,15 @@ Otomatisasi absensi PeoplesHR via browser Microsoft Edge.
 1. Clone atau download repo ini pake git clone
 2. **Pindahkan folder repo ke `C:\`**  
    → Supaya kamu cukup isi username dan password saja (tidak perlu isi path Python script).
-3. Buka folder repo tersebut, lalu **buat shortcut file `run_auto_coci.bat`** ke lokasi mana pun (misalnya: Desktop).  
+3. Rename folder menjadi coci
+4. Buka folder repo tersebut, lalu **buat shortcut file `run_auto_coci.bat`** ke lokasi mana pun (misalnya: Desktop).  
    ⚠️ *Ingat, **buat shortcut** ya, jangan di-*copy*!
-4. Klik dua kali file shortcut `run_auto_coci.bat`.
-5. Masukkan username dan password akun PeoplesHR.
-6. Masukkan path direktori `auto_coci.py` (misal: `C:\Users\ASUS-ROG\Desktop\coci`)  
+5. Klik dua kali file shortcut `run_auto_coci.bat`.
+7. Aplikasi akan menyiapkan semua yang dibutuhkan seperti: Instalasi Python (jika belum terinstall), Package Python yg dibutuhkan dan driver Microsoft Edge berdasarkan versi Microsoft Edge yang sudah terinstall.
+8. Masukkan username dan password akun PeoplesHR.
+9. Masukkan path direktori `auto_coci.py` (misal: `C:\Users\ASUS-ROG\Desktop\coci`)  
    → *Kalau kamu sudah simpan repo di `C:\`, bagian ini akan otomatis dilewati.*
-7. Tunggu proses selesai. Aplikasi akan menutup otomatis.
+10. Tunggu proses selesai. Aplikasi akan menutup otomatis.
 
 ---
 

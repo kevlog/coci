@@ -3,7 +3,8 @@ from package_checker import check_and_install_packages
 # Daftar paket yang diperlukan
 required_packages = [
     ("selenium", "selenium"),
-    ("python-dotenv", "dotenv")
+    ("python-dotenv", "dotenv"),
+    ("webdriver-manager", "webdriver_manager")
 ]
 
 # Memeriksa dan menginstal paket yang hilang
@@ -21,6 +22,22 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from dotenv import load_dotenv
+from selenium.webdriver.edge.service import Service as EdgeService
+from selenium.webdriver.edge.options import Options
+from webdriver_manager.microsoft import EdgeChromiumDriverManager
+
+# === Path ke file null ===
+def delNull():
+    # Path ke file ini (auto_coci.py)
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    null_file = os.path.join(current_dir, "..", "null")
+
+    if os.path.exists(null_file):
+        os.remove(null_file)
+        print(f"\n[INFO] 🗑️ File '{null_file}' berhasil dihapus.")
+    else:
+        print(f"[WARN] ⚠️ File '{null_file}' tidak ditemukan.")
+    time.sleep(2)
 
 # === Logging ke terminal dan file ===
 class LoggerWriter:
@@ -42,8 +59,11 @@ class LoggerWriter:
         self.stream.flush()
         self.logfile.flush()
 
-sys.stdout = LoggerWriter(sys.stdout, "log.log")
-sys.stderr = LoggerWriter(sys.stderr, "log.log")
+# Ensure the logs directory exists
+os.makedirs("logs", exist_ok=True)
+
+sys.stdout = LoggerWriter(sys.stdout, "logs/log.log")
+sys.stderr = LoggerWriter(sys.stderr, "logs/log.log")
 
 # === Load ENV ===
 load_dotenv()
@@ -59,16 +79,34 @@ options.add_argument("start-maximized")
 
 # === Fungsi utama ===
 def main():
-    print("\n[INFO] ⌚ Menjalankan Auto Clock-In / Clock-Out ...")
-    # Inisialisasi driver
-    service = EdgeService(executable_path="msedgedriver.exe")
-    driver = webdriver.Edge(service=service, options=options)
+    # Inisialisasi driver Microsoft Edge
+    try:
+        # Cek apakah driver sudah ada di folder .msedgedriver
+        print("[INFO] 🔍 Mencari driver di folder .msedgedriver...")    
+        driver_path = EdgeChromiumDriverManager().install()
+        if not os.path.exists(driver_path):
+            raise FileNotFoundError(f"Driver tidak ditemukan di path: {driver_path}")
+        print(f"[INFO] ✅ Driver ditemukan di: {driver_path}")
+    except Exception as e:
+        print(f"[ERR]  ❌ Gagal mengunduh atau memvalidasi driver. Detail: {e}\a")
+        exit()
 
+    # Set opsi
+    try:
+        service = EdgeService(executable_path=driver_path)
+        driver = webdriver.Edge(service=service, options=options)
+        print("[INFO] 🚑 Driver berhasil dijalankan.")
+    except Exception as e:
+        print(f"[ERR]  ❌ Gagal menginisialisasi driver. Detail: {e}\a")
+        exit()
+
+    print("\n[INFO] ⌚ Menjalankan Auto Clock-In / Clock-Out ...")
+    
     wait = WebDriverWait(driver, 15)
 
     while True:
         try:
-            print("\n[INFO] 🚀 Membuka halaman login...")
+            print("[INFO] 🚀 Membuka halaman login...")
             driver.get("https://metrodata.peopleshr.com")
             break  # Keluar dari loop jika berhasil membuka halaman
         except Exception as e:
@@ -92,6 +130,7 @@ def main():
         username_input.send_keys(username)
     except Exception:
         print("[ERR]  ❌ Gagal menemukan field username. Mungkin ID-nya berubah?\a")
+        time.sleep(3)
         driver.quit()
         exit()
 
@@ -101,6 +140,7 @@ def main():
         password_input.send_keys(password)
     except Exception:
         print("[ERR]  ❌ Gagal menemukan field password.\a")
+        time.sleep(3)
         driver.quit()
         exit()
 
@@ -111,6 +151,7 @@ def main():
     except Exception:
         print("\a")
         print("[ERR]  ❌ Gagal klik tombol login.")
+        time.sleep(3)
         driver.quit()
         exit()
 
@@ -125,16 +166,14 @@ def main():
         man_swipe.click()
         print("[INFO] ✅ Berhasil klik Tombol Clock In/Out!")
 
-        print("[INFO] 🧹 Menutup browser dalam 3 detik", end="", flush=True)
         # Animasi titik-titik selama 1,5 detik
-        for _ in range(3):
-            time.sleep(0.5)
-            sys.stdout.write(".")
+        for i in range(3, 0, -1):
+            sys.stdout.write(f"\r[INFO] 🧹 Menutup browser dalam {i} detik" + "." * (4 - i))
             sys.stdout.flush()
-        # Ada jeda 1,5 setelah titik terakhir biar pas 3 detik
-        time.sleep(1.5)
+            time.sleep(1)
 
         print("\n[INFO] ✅ Browser ditutup. Sampai jumpa!")
+        delNull()
         driver.quit()
 
         for i in range(3, 0, -1):
@@ -155,6 +194,7 @@ def main():
     except Exception:
         print("[ERR]  ❌ Gagal menemukan atau klik elemen 'ManSwipe' / tombol Clock In/Out. Pastikan login sukses.\a")
         driver.quit()
+        delNull()
         # Countdown dengan animasi titik
         for i in range(3, 0, -1):
             sys.stdout.write(f"\r[INFO] 🕒 Menutup aplikasi dalam {i} detik" + "." * (4 - i))
@@ -183,6 +223,7 @@ except KeyboardInterrupt:
         confirm = input("❓ Yakin ingin membatalkan proses? (y/n): ").lower()
         if confirm == 'y':
             print("\a")
+            delNull()
             print("[WARN] ⛔ Proses dibatalkan oleh pengguna.")
             exit()
         else:
