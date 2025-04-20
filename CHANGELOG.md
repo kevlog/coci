@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/kevlog/coci/compare/v1.4.1...v1.5.0) (2025-04-20)
+
+
+### Features
+
+* improve batch script for environment setup and script execution ([75e812c](https://github.com/kevlog/coci/commit/75e812c26bc6863497c60d87da4915a80fbbe6e1))
+
 ## [1.4.1](https://github.com/kevlog/coci/compare/v1.4.0...v1.4.1) (2025-04-20)
 
 
