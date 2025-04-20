@@ -80,9 +80,9 @@ if "%inputPass%"=="" (
 echo %separator%
 
 REM Cek apakah C:\coci\auto_coci.py ada
-if exist "C:\coci\auto_coci.py" (
-    set "inputScript=C:\coci"
-    echo [INFO] ✅ File auto_coci.py ditemukan di C:\coci. Menetapkan SCRIPT_PATH ke C:\coci\auto_coci.py.
+if exist "C:\coci\src\auto_coci.py" (
+    set "inputScript=C:\coci\"
+    echo [INFO] ✅ File auto_coci.py ditemukan di C:\coci. Menetapkan SCRIPT_PATH ke C:\coci\src\auto_coci.py.
     goto mainProgram
 ) else (
     goto getScriptPath
@@ -91,8 +91,8 @@ if exist "C:\coci\auto_coci.py" (
 :getScriptPath
 set "inputScript="
 set /p "inputScript=📁 Masukkan DIREKTORI tempat auto_coci.py (contoh: C:\Users\ASUS-TUF\Desktop\coci): "
-REM Hapus tanda '/' di akhir input jika ada
-:: if "%inputScript:~-1%"=="/" set "inputScript=%inputScript:~0,-1%"
+REM Tambahkan tanda '\' di akhir input jika belum ada
+if not "%inputScript:~-1%"=="\" set "inputScript=%inputScript%\"
 echo %separator%
 
 REM Trim spasi dari input (optional tapi bagus)
@@ -105,7 +105,7 @@ if "%inputScript%"=="" (
     goto getScriptPath
 )
 
-if not exist "%inputScript%src\auto_coci.py" (
+if not exist "%inputScript%\src\auto_coci.py" (
     echo 
     echo [ERR]  ❌ ERROR: File auto_coci.py tidak ditemukan di path yang diberikan!
     pause
