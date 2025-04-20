@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/kevlog/coci/compare/v1.4.0...v1.4.1) (2025-04-20)
+
+
+### Bug Fixes
+
+* add incognito mode support for Microsoft Edge ([0c75956](https://github.com/kevlog/coci/commit/0c759565033ef9efbb9fd3bfcf86681ba901c369))
+
 ## [1.4.0](https://github.com/kevlog/coci/compare/v1.3.2...v1.4.0) (2025-04-20)
 
 
