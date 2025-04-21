@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/kevlog/coci/compare/v1.5.0...v1.6.0) (2025-04-21)
+
+
+### Features
+
+* improve password input visibility and update .gitignore rules ([7491960](https://github.com/kevlog/coci/commit/74919605881aab07bf08e60cf55ac9b3cc05e111))
+
 ## [1.5.0](https://github.com/kevlog/coci/compare/v1.4.1...v1.5.0) (2025-04-20)
 
 
