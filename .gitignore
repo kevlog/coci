@@ -21,3 +21,6 @@ null
 # Byte-compiled / optimized / DLL files
 *.pyd
 *.pyo
+
+# Ignore notes file
+notes

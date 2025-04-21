@@ -70,7 +70,11 @@ echo %separator%
 
 :getPasswordInput
 set "inputPass="
-set /p "inputPass=🔒 Masukkan Password Akun PeoplesHR: "
+:: set /p "inputPass=🔒 Masukkan Password Akun PeoplesHR: "
+for /f "delims=" %%P in ('powershell -Command "$p = Read-Host -AsSecureString '🔒 Masukkan Password Akun PeoplesHR'; [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($p))"') do (
+    set "inputPass=%%P"
+)
+
 if "%inputPass%"=="" (
     echo 
     echo [ERR]  ❌ ERROR: Password tidak boleh kosong!
