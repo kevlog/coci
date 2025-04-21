@@ -95,8 +95,6 @@ if exist "C:\coci\src\auto_coci.py" (
 :getScriptPath
 set "inputScript="
 set /p "inputScript=📁 Masukkan DIREKTORI tempat auto_coci.py (contoh: C:\Users\ASUS-TUF\Desktop\coci): "
-REM Tambahkan tanda '\' di akhir input jika belum ada
-if not "%inputScript:~-1%"=="\" set "inputScript=%inputScript%\"
 echo %separator%
 
 REM Trim spasi dari input (optional tapi bagus)
@@ -108,6 +106,9 @@ if "%inputScript%"=="" (
     pause
     goto getScriptPath
 )
+
+REM Tambahkan tanda '\' di akhir input jika belum ada
+if not "%inputScript:~-1%"=="\" set "inputScript=%inputScript%\"
 
 if not exist "%inputScript%\src\auto_coci.py" (
     echo 
