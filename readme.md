@@ -14,7 +14,7 @@ Otomatisasi absensi PeoplesHR via browser Microsoft Edge.
 
 ## 🚀 Cara Menggunakan
 
-1. Clone atau download repo ini pake git clone
+1. Clone repo ini pake git clone atau bisa langsung download melalui fitur Release (coba lihat di sebelah kanan)
 2. [TIDAK WAJIB] Klik kanan pada file .zip lalu pilih Properties dan centang Unblock
 3. Extract file .zip
 4. **Pindahkan folder repo ke `C:\`**  
