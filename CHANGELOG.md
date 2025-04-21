@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/kevlog/coci/compare/v1.6.0...v1.6.1) (2025-04-21)
+
+
+### Bug Fixes
+
+* handle empty SCRIPT_PATH input before processing path ([04e8570](https://github.com/kevlog/coci/commit/04e857019614298fdb4b9bd7bc6135253bd2c214))
+
 ## [1.6.0](https://github.com/kevlog/coci/compare/v1.5.0...v1.6.0) (2025-04-21)
 
 
