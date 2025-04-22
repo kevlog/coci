@@ -71,13 +71,18 @@ Install Python dari website resminya: https://www.python.org/downloads/
 ### 2. Kenapa mengguunakan Microsoft Edge?
 Microsoft Edge adalah browser yang menggantikan Internet Explorer<sup>[[1]](https://learn.microsoft.com/id-id/shows/it-ops-talk/microsoft-edge--internet-explorer-retirement-announcement)</sup>. Sehingga ketika menggunakan sistem operasi Windows, maka secara otomatis Edge sudah terinstall<sup>[[2]](https://www.microsoft.com/en-us/edge/windows-edge?form=MA13FJ&cs=3477714609)</sup>.
 
+### 3. Bagaimana jika belum menginstall Python di Laptop?
+Tenang aja, aplikasi akan secara otomatis mengunduh Python sesuai dengan arsitektur komputermu, termasuk juga package Python yang dibutuhkan.
+
+### 4. Bagaimana jika belum memiliki WebDriver Microsoft Edge?
+Tenang aja, aplikasi akan secara otomatis mengunduh WebDriver berdasarkan versi Microsoft Edge yang terinstall di komputermu.
+
 ---
 
 ## 🔗 Referensi
 
 - 📝 [1] [Microsoft Edge | Pengumuman Penghentian Internet Explorer](https://learn.microsoft.com/id-id/shows/it-ops-talk/microsoft-edge--internet-explorer-retirement-announcement)
 - 🪟 [2] [Windows + Edge | Better Together](https://www.microsoft.com/en-us/edge/windows-edge?form=MA13FJ&cs=3477714609)
-- 📥 [Download Python](https://www.python.org/downloads/)
 - 🌐 [Download Microsoft Edge](https://www.microsoft.com/id-id/edge/download?form=MA13FJ)
 - ⚙️ [Download Edge WebDriver](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/?form=MA13LH#installation)
 - 📚 [Dokumentasi Edge WebDriver](https://learn.microsoft.com/en-us/microsoft-edge/webdriver-chromium/?tabs=c-sharp&form=MA13LH)
