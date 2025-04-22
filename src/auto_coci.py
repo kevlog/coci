@@ -159,13 +159,17 @@ def main():
     try:
         print("[INFO] 🕵️ Menunggu elemen Clock In/Out...")
         man_swipe = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "ManSwipe")))
+        history = wait.until(EC.element_to_be_clickable((By.XPATH, "//span[text()='History']")))
         
         # Scroll biar elemen terlihat di layar
         driver.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", man_swipe)
         time.sleep(1)  # Delay dikit biar efek scroll kelihatan
-        
         man_swipe.click()
-        print("[INFO] ✅ Berhasil klik Tombol Clock In/Out!")
+        print("[INFO] 👆 Berhasil klik Tombol Clock In/Out!")
+        time.sleep(2)  # Delay dikit tunggu presensi kesimpan
+        history.click()
+        print("[INFO] 📋 Berhasil menampilkan history presensi!")
+        time.sleep(1)  # Delay dikit biar ada waktu buat user baca history
 
         # Animasi titik-titik selama 1,5 detik
         for i in range(3, 0, -1):
