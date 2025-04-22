@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/kevlog/coci/compare/v1.6.1...v1.7.0) (2025-04-22)
+
+
+### Features
+
+* add attendance history display for clock-in and clock-out ([4617a12](https://github.com/kevlog/coci/commit/4617a127dda85e8e4cb96460b9bc4c632507aff4))
+
 ## [1.6.1](https://github.com/kevlog/coci/compare/v1.6.0...v1.6.1) (2025-04-21)
 
 
