@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.2](https://github.com/kevlog/coci/compare/v1.8.1...v1.8.2) (2025-04-24)
+
+
+### Bug Fixes
+
+* remove !msedgedriver.exe from .gitignore ([159009b](https://github.com/kevlog/coci/commit/159009b7374886366ecec4a2020e512c738e711d))
+
 ## [1.8.1](https://github.com/kevlog/coci/compare/v1.8.0...v1.8.1) (2025-04-24)
 
 
