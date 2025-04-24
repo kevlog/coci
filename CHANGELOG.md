@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/kevlog/coci/compare/v1.8.0...v1.8.1) (2025-04-24)
+
+
+### Bug Fixes
+
+* prevent username input from starting on a new line ([4023a2a](https://github.com/kevlog/coci/commit/4023a2a14b8362836ce3695d4d2b92b671afac76))
+
 ## [1.8.0](https://github.com/kevlog/coci/compare/v1.7.0...v1.8.0) (2025-04-24)
 
 
