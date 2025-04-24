@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/kevlog/coci/compare/v1.7.0...v1.8.0) (2025-04-24)
+
+
+### Features
+
+* improve package handling and add password encryption ([d8ef4bb](https://github.com/kevlog/coci/commit/d8ef4bb9f8cc7ecf41786790cdfd0092ad788865))
+
 ## [1.7.0](https://github.com/kevlog/coci/compare/v1.6.1...v1.7.0) (2025-04-22)
 
 
