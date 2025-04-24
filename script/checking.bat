@@ -35,6 +35,9 @@ IF %ERRORLEVEL% EQU 0 (
     echo [INFO] ✅ Python sudah terinstal!
     for /f "tokens=*" %%i in ('python --version') do set "pyver=%%i"
     echo [INFO] 🐍 Versi !pyver!
+    :: Jalankan installer packages Python yang diperlukan
+    cd /d %~dp0
+    python ../src/package_checker.py
     exit /b
 )
 

@@ -1,18 +1,6 @@
-from package_checker import check_and_install_packages
-
-# Daftar paket yang diperlukan
-required_packages = [
-    ("selenium", "selenium"),
-    ("python-dotenv", "dotenv"),
-    ("webdriver-manager", "webdriver_manager")
-]
-
-# Memeriksa dan menginstal paket yang hilang
-check_and_install_packages(required_packages)
-
-import subprocess
 import sys
 import os
+import subprocess
 import time
 from datetime import datetime
 from selenium import webdriver
@@ -25,6 +13,7 @@ from dotenv import load_dotenv
 from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.edge.options import Options
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
+from read_password import load_access
 
 # === Path ke file null ===
 def delNull():
@@ -34,7 +23,7 @@ def delNull():
 
     if os.path.exists(null_file):
         os.remove(null_file)
-        print(f"\n[INFO] 🗑️ File '{null_file}' berhasil dihapus.")
+        print(f"[INFO] 🗑️ File '{null_file}' berhasil dihapus.")
     else:
         print(f"[WARN] ⚠️ File '{null_file}' tidak ditemukan.")
     time.sleep(2)
@@ -67,8 +56,9 @@ sys.stderr = LoggerWriter(sys.stderr, "logs/log.log")
 
 # === Load ENV ===
 load_dotenv()
-username = os.getenv("MY_USERNAME")
-password = os.getenv("MY_PASSWORD")
+data = load_access()
+username = os.getenv("UNAME")
+password = data
 
 # === Selenium options ===
 options = Options()
@@ -101,7 +91,7 @@ def main():
         print(f"[ERR]  ❌ Gagal menginisialisasi driver. Detail: {e}\a")
         exit()
 
-    print("\n[INFO] ⌚ Menjalankan Auto Clock-In / Clock-Out ...")
+    print("[INFO] ⌚ Menjalankan Auto Clock-In / Clock-Out ...")
     
     wait = WebDriverWait(driver, 15)
 

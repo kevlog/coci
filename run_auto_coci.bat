@@ -44,10 +44,9 @@ if exist "%currentDir%.env" (
 )
 
 REM Jika belum ada juga, lanjut buat file .env
+echo [WARN] ⚠️ File .env tidak ditemukan!
+echo [INFO] 🛠️ Membuat file .env baru...
 echo 
-echo [WARN] ⚠️  File .env tidak ditemukan!
-echo [INFO] 🛠️  Membuat file .env baru...
-echo.
 timeout /t 1 >nul
 
 REM Ambil input dari user
@@ -130,19 +129,18 @@ if exist "C:\coci\auto_coci.py" (
 
 REM Tulis ke file .env
 (
-    echo MY_USERNAME=%inputUser%
-    echo MY_PASSWORD=%inputPass%
+    echo UNAME=%inputUser%
+    echo PASSW=%inputPass%
     echo SCRIPT_PATH=%fullScriptPath%
 ) > "%envPath%"
 
 echo.
 echo [INFO] ✅ File .env berhasil dibuat di: %envPath%
 
-timeout /t 3
-echo.
+:: Mengenkripsi password
+python "src\update_password.py"
 
 :run_script
-
 REM Load .env and extract SCRIPT_PATH
 echo [INFO] 🔄 Mengambil konfigurasi dari: %envPath%
 set "SCRIPT_PATH="
@@ -156,7 +154,7 @@ for /f "usebackq delims=" %%i in (`type "%envPath%"`) do (
 
 REM Debug: Print SCRIPT_PATH sebelum melanjutkan
 echo [INFO] 📄 File Python akan dijalankan dari: %SCRIPT_PATH%
-echo.
+
 REM Cek apakah SCRIPT_PATH ada di .env dan file-nya valid
 if "%SCRIPT_PATH%"=="" (
     echo 

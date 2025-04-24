@@ -1,9 +1,18 @@
+import os
 import subprocess
 import sys
 import socket
 import time
+import json
+import threading
+import itertools
 
-print(f"Using Python at: {sys.executable}")
+def spinner(text, stop_event):
+    spin = itertools.cycle(['⠋', '⠙', '⠸', '⠴', '⠦', '⠇'])
+    while not stop_event.is_set():
+        sys.stdout.write(f'\r[INFO] {next(spin)} {text}')
+        sys.stdout.flush()
+        time.sleep(0.1)
 
 # Fungsi untuk memeriksa koneksi internet
 def check_internet_connection():
@@ -13,6 +22,24 @@ def check_internet_connection():
         return True
     except OSError:
         return False
+
+# Fungsi untuk get path dari file json
+def get_path():
+    file_path = os.path.join(os.path.dirname(__file__), "..", "packages.json")
+    return file_path
+
+# Fungsi untuk memuat daftar paket yang diperlukan dari file JSON
+def load_required_packages(json_path):
+    if not os.path.exists(json_path):
+        print(f"[ERR] ❌ File '{json_path}' tidak ditemukan.")
+        return []
+    try:
+        with open(json_path, "r") as f:
+            data = json.load(f)
+        return [(pkg["pip"], pkg["import"]) for pkg in data]
+    except (json.JSONDecodeError, KeyError) as e:
+        print(f"[ERR] ❌ Gagal memuat paket dari JSON: {e}")
+        return []
 
 # Fungsi untuk memeriksa dan menginstal paket yang hilang
 def install_if_missing(pip_package, import_name=None):
@@ -25,15 +52,17 @@ def install_if_missing(pip_package, import_name=None):
 
 # Fungsi untuk memeriksa dan menginstal semua paket yang diperlukan
 def check_and_install_packages(required_packages):
-    print("\n[INFO] 🔍 Memeriksa paket yang diperlukan...\a")
+    print(f"[INFO] 📂 Using Python at: {sys.executable}")
+    print("[INFO] 🔍 Memeriksa paket yang diperlukan...")
     # Memeriksa koneksi internet hingga tersedia
     while not check_internet_connection():
-        print("\n[ERR]  ❌ Tidak ada koneksi internet. Harap periksa koneksi Anda dan coba lagi.\a")
+        print("[ERR]  ❌ Tidak ada koneksi internet. Harap periksa koneksi Anda dan coba lagi.\a")
         for i in range(10, 0, -1):
             dot_count = (10 - i) % 3 + 1  # Akan menghasilkan 1, 2, 3, lalu ulang
             sys.stdout.write(f"\r[INFO] Mencoba menghubungkan ulang dalam {i} detik " + "." * dot_count + "   ")  # Extra spasi utk overwrite
             sys.stdout.flush()
             time.sleep(1)
+        print()
 
     # Memeriksa paket yang hilang
     missing_packages = []
@@ -50,13 +79,28 @@ def check_and_install_packages(required_packages):
 
         # Instalasi paket yang hilang
         for package in missing_packages:
+            print(f"[INFO] 📦 Installing package: {package}")
+            stop_event = threading.Event()
+            spinner_thread = threading.Thread(target=spinner, args=(f" Sedang menginstal '{package}'...", stop_event))
+            spinner_thread.start()
+            start = time.time()
+
             try:
-                print(f"[INFO] 📦 Installing package: {package}")
-                subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-                print(f"[INFO] 🎁 Berhasil menginstall package: {package}\n")
+                subprocess.check_call([sys.executable, "-m", "pip", "install", package], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                duration = round((time.time() - start), 2)
+                stop_event.set()
+                spinner_thread.join()
+                print(f"\n[INFO] 🎁 Berhasil menginstall package: {package} dalam {duration} detik.\n")
             except subprocess.CalledProcessError as e:
+                stop_event.set()
+                spinner_thread.join()
                 print(f"[ERR]  ❌ Gagal menginstal paket '{package}'. Detail: {e}\a")
                 # sys.exit(1)  # Keluar jika ada kegagalan instalasi
     else:
         print("[INFO] ✅ Semua paket sudah terinstal!")
-        
+
+def main():
+    path = get_path()
+    check_and_install_packages(load_required_packages(path))
+
+main()

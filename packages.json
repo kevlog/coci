@@ -1,0 +1,7 @@
+[
+    { "pip": "selenium", "import": "selenium" },
+    { "pip": "python-dotenv", "import": "dotenv" },
+    { "pip": "webdriver-manager", "import": "webdriver_manager" },
+    { "pip": "cryptography", "import": "cryptography.fernet" }
+]
+  
