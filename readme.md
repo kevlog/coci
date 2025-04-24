@@ -46,7 +46,8 @@ Otomatisasi absensi PeoplesHR via browser Microsoft Edge.
       - Gunakan tanda petik apabila nama file shortcut memiliki spasi.
       - Untuk mandapatkan path shortcut, cukup klik 1x pada file shortcut lalu tekan `CTRL + Shift + C`.
    - ![Windows Scheduler for Auto Coci](assets/windows-scheduler-for-auto-coci.png)
-- Kalo mau ubah username dan pass peopleshr bisa di file .env (sementara)
+- Password yang tersimpan di .env sudah terenkripsi
+- Hapus file.env jika ingin mengubah username / password
 - Udah ada fitur auto-install (biar makin praktis):
    - Python
    - Package Python yang dibutuhkan
