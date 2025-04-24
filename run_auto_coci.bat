@@ -44,9 +44,10 @@ if exist "%currentDir%.env" (
 )
 
 REM Jika belum ada juga, lanjut buat file .env
+echo 
 echo [WARN] ⚠️ File .env tidak ditemukan!
 echo [INFO] 🛠️ Membuat file .env baru...
-echo 
+echo.
 timeout /t 1 >nul
 
 REM Ambil input dari user
@@ -55,7 +56,6 @@ echo %separator%
 echo 📝 Silakan isi data berikut untuk konfigurasi .env:
 
 echo %separator%
-
 :getUserInput
 set "inputUser="
 set /p "inputUser=👤 Masukkan Username Akun PeoplesHR: "
