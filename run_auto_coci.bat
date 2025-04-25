@@ -4,9 +4,6 @@ powershell -c [console]::beep()
 REM Set the font color to green
 color a
 
-REM Set the size of the Command Prompt window (Width x Height)
-mode con: cols=90 lines=30
-
 REM biar code page di cmd berubah menjadi UTF-8, guna menampilkan karakter non-ASCII seperti emoji
 chcp 65001 >null
 
