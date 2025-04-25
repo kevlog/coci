@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.3](https://github.com/kevlog/coci/compare/v1.8.2...v1.8.3) (2025-04-25)
+
+
+### Bug Fixes
+
+* remove cmd resize command causing input misalignment ([ccd1ffa](https://github.com/kevlog/coci/commit/ccd1ffa03b624009570fdec79fad5fc9817a10e9))
+
 ## [1.8.2](https://github.com/kevlog/coci/compare/v1.8.1...v1.8.2) (2025-04-24)
 
 
