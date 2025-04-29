@@ -41,10 +41,9 @@ if exist "%currentDir%.env" (
 )
 
 REM Jika belum ada juga, lanjut buat file .env
-echo 
 echo [WARN] ⚠️ File .env tidak ditemukan!
 echo [INFO] 🛠️ Membuat file .env baru...
-echo.
+echo 
 timeout /t 1 >nul
 
 REM Ambil input dari user

@@ -81,7 +81,7 @@ def check_and_install_packages(required_packages):
         for package in missing_packages:
             print(f"[INFO] 📦 Installing package: {package}")
             stop_event = threading.Event()
-            spinner_thread = threading.Thread(target=spinner, args=(f" Sedang menginstal '{package}'...", stop_event))
+            spinner_thread = threading.Thread(target=spinner, args=(f" Sedang menginstall '{package}'", stop_event))
             spinner_thread.start()
             start = time.time()
 
