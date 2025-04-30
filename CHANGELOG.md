@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.4](https://github.com/kevlog/coci/compare/v1.8.3...v1.8.4) (2025-04-30)
+
+
+### Bug Fixes
+
+* **logs:** improve terminal log formatting and suppress Chromium error output ([90aacc3](https://github.com/kevlog/coci/commit/90aacc35b0c908b0b658c3e6f3b790d0d5557524))
+
 ## [1.8.3](https://github.com/kevlog/coci/compare/v1.8.2...v1.8.3) (2025-04-25)
 
 
