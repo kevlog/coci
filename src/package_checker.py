@@ -8,11 +8,19 @@ import threading
 import itertools
 
 def spinner(text, stop_event):
+    dots = itertools.cycle(['.', '..', '...'])
+    space = itertools.cycle(['     '])
     spin = itertools.cycle(['⠋', '⠙', '⠸', '⠴', '⠦', '⠇'])
+    frame = 0
+    dot = next(dots)
+
     while not stop_event.is_set():
-        sys.stdout.write(f'\r[INFO] {next(spin)} {text}')
+        if frame % 5 == 0:
+            dot = next(dots)
+        sys.stdout.write(f'\r[INFO] {next(spin)} {text} {dot} {next(space)}')
         sys.stdout.flush()
         time.sleep(0.1)
+        frame += 1
 
 # Fungsi untuk memeriksa koneksi internet
 def check_internet_connection():
@@ -75,13 +83,13 @@ def check_and_install_packages(required_packages):
         print("\n[INFO] 📦 Daftar paket yang belum terinstal:\a")
         for package in missing_packages:
             print(f"  - {package}")
-        print("\n[INFO] 🔧 Memulai instalasi...")
+        print("\n[INFO] 🔧 Memulai instalasi.")
 
         # Instalasi paket yang hilang
         for package in missing_packages:
             print(f"[INFO] 📦 Installing package: {package}")
             stop_event = threading.Event()
-            spinner_thread = threading.Thread(target=spinner, args=(f" Sedang menginstall '{package}'", stop_event))
+            spinner_thread = threading.Thread(target=spinner, args=(f" Sedang menginstal '{package}'", stop_event))
             spinner_thread.start()
             start = time.time()
 
@@ -90,7 +98,7 @@ def check_and_install_packages(required_packages):
                 duration = round((time.time() - start), 2)
                 stop_event.set()
                 spinner_thread.join()
-                print(f"\n[INFO] 🎁 Berhasil menginstall package: {package} dalam {duration} detik.\n")
+                print(f"\n[INFO] 🎁 Berhasil menginstal package: {package} dalam {duration} detik.\n")
             except subprocess.CalledProcessError as e:
                 stop_event.set()
                 spinner_thread.join()

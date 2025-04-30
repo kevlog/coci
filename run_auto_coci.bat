@@ -90,7 +90,6 @@ if exist "C:\coci\src\auto_coci.py" (
 :getScriptPath
 set "inputScript="
 set /p "inputScript=📁 Masukkan DIREKTORI tempat auto_coci.py (contoh: C:\Users\ASUS-TUF\Desktop\coci): "
-echo %separator%
 
 REM Trim spasi dari input (optional tapi bagus)
 for /f "tokens=* delims= " %%i in ("%inputScript%") do set "inputScript=%%i"
@@ -108,7 +107,7 @@ if not "%inputScript:~-1%"=="\" set "inputScript=%inputScript%\"
 if not exist "%inputScript%\src\auto_coci.py" (
     echo 
     echo [ERR]  ❌ ERROR: File auto_coci.py tidak ditemukan di path yang diberikan!
-    pause
+    echo.
     goto getScriptPath
 )
 
@@ -129,7 +128,7 @@ REM Tulis ke file .env
     echo PASSW=%inputPass%
     echo SCRIPT_PATH=%fullScriptPath%
 ) > "%envPath%"
-
+echo %separator%
 echo.
 echo [INFO] ✅ File .env berhasil dibuat di: %envPath%
 

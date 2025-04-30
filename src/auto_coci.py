@@ -1,7 +1,8 @@
 import sys
 import os
-import subprocess
+import threading
 import time
+import itertools
 from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.edge.service import Service as EdgeService
@@ -14,6 +15,21 @@ from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.edge.options import Options
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from read_password import load_access
+
+# Spinner
+def spinner(text, stop_event):
+    dots = itertools.cycle(['.', '..', '...'])
+    space = itertools.cycle(['   '])
+    frame = 0
+    dot = next(dots)
+
+    while not stop_event.is_set():
+        if frame % 5 == 0:
+            dot = next(dots)
+        sys.stdout.write(f'\r[INFO] {text}{dot}{next(space)}')
+        sys.stdout.flush()
+        time.sleep(0.1)
+        frame += 1
 
 # === Path ke file null ===
 def delNull():
@@ -67,18 +83,27 @@ options.add_argument('--disable-logging') # Disable logging
 options.add_argument('--log-level=3') # Suppress logs
 options.add_argument("start-maximized") # Buka jendela penuh
 options.add_argument('--inprivate') # Mode InPrivate (Incognito)
+options.add_argument('--disable-features=RendererCodeIntegrity') # Disable code integrity checks
+options.add_argument('--disable-software-rasterizer') # Disable software rasterizer
+options.add_argument('--disable-gpu') # Disable GPU acceleration
 
 # === Fungsi utama ===
 def main():
     # Inisialisasi driver Microsoft Edge
     try:
         # Cek apakah driver sudah ada di folder .msedgedriver
-        print("[INFO] 🔍 Mencari driver di folder .msedgedriver...")    
+        stop_event = threading.Event()
+        spinner_thread = threading.Thread(target=spinner, args=(f"🔍 Mencari driver di folder .msedgedriver", stop_event))
+        spinner_thread.start()
         driver_path = EdgeChromiumDriverManager().install()
+        stop_event.set()
+        spinner_thread.join()
         if not os.path.exists(driver_path):
             raise FileNotFoundError(f"Driver tidak ditemukan di path: {driver_path}")
-        print(f"[INFO] ✅ Driver ditemukan di: {driver_path}")
+        print(f"\n[INFO] ✅ Driver ditemukan di: {driver_path}")
     except Exception as e:
+        stop_event.set()
+        spinner_thread.join()
         print(f"[ERR]  ❌ Gagal mengunduh atau memvalidasi driver. Detail: {e}\a")
         exit()
 
