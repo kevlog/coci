@@ -76,7 +76,7 @@ def reset_password():
     return original_password
 
 def load_access():
-    return get_password()
+    return getPassword()
 
 def main():
     return load_access()

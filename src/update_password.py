@@ -10,11 +10,18 @@ from cryptography.fernet import InvalidToken
 
 def spinner(text, stop_event):
     spin = itertools.cycle(['⠋', '⠙', '⠸', '⠴', '⠦', '⠇'])
+    dots = itertools.cycle(['.', '..', '...'])
+    space = itertools.cycle(['   '])
+    frame = 0
+    dot = next(dots)
+
     while not stop_event.is_set():
-        sys.stdout.write(f'\r[INFO]  {next(spin)} {text}')
+        if frame % 5 == 0:
+            dot = next(dots)
+        sys.stdout.write(f'\r[INFO]  {next(spin)} {text} {dot}{next(space)}')
         sys.stdout.flush()
         time.sleep(0.1)
-    print()
+        frame += 1
 
 def get_env():
     load_dotenv()
@@ -111,13 +118,13 @@ def is_valid(raw_password):
 
 def load_encrpypt_password(raw_password):
     stop_event = threading.Event()
-    spinner_thread = threading.Thread(target=spinner, args=("Mengenkripsi password..", stop_event))
+    spinner_thread = threading.Thread(target=spinner, args=("Mengenkripsi password", stop_event))
     spinner_thread.start()
+    encrypt_password(raw_password)
     time.sleep(2)  # Simulasi proses
     stop_event.set()
     spinner_thread.join()
-    encrypt_password(raw_password)
-    print("[INFO] 🔒 Password berhasil dienkripsi!")
+    print("\n[INFO] 🔒 Password berhasil dienkripsi!")
 
 def encrypt_password(raw_password):
     # Enkripsi password dan simpan ke .env

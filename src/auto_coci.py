@@ -11,10 +11,10 @@ from selenium.webdriver.edge.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from dotenv import load_dotenv
 from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.edge.options import Options
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
+from dotenv import load_dotenv
 from read_password import load_access
 
 # Spinner
@@ -130,13 +130,13 @@ def main():
         print(f"[ERR]  ❌ Gagal menginisialisasi driver. Detail: {e}\a")
         exit()
 
-    print("[INFO] ⌚ Menjalankan Auto Clock-In / Clock-Out ...")
+    print("[INFO] ⌚ Menjalankan Auto Clock-In / Clock-Out")
     
     wait = WebDriverWait(driver, 15)
 
     while True:
         try:
-            print("[INFO] 🚀 Membuka halaman login...")
+            print("[INFO] 🚀 Membuka halaman login")
             driver.get("https://metrodata.peopleshr.com")
             break  # Keluar dari loop jika berhasil membuka halaman
         except Exception as e:
@@ -155,7 +155,7 @@ def main():
             print("[INFO] 🌐 Coba sambungin ke internet ya, kami akan coba menghubungkan lagi!")
             time.sleep(3)  # Tunggu 5 detik sebelum mencoba lagi
     try:
-        print("[INFO] ⌨️ Mengisi username...")
+        print("[INFO] ⌨️ Mengisi username")
         username_input = wait.until(EC.presence_of_element_located((By.ID, "txtusername")))
         username_input.send_keys(username)
     except Exception:
@@ -165,7 +165,7 @@ def main():
         exit()
 
     try:
-        print("[INFO] 🔒 Mengisi password...")
+        print("[INFO] 🔒 Mengisi password")
         password_input = driver.find_element(By.ID, "txtpassword")
         password_input.send_keys(password)
     except Exception:
@@ -175,29 +175,71 @@ def main():
         exit()
 
     try:
-        print("[INFO] ➡️ Menekan tombol login...")
+        print("[INFO] ➡️ Menekan tombol login")
         login_button = driver.find_element(By.ID, "btnsubmit")
         login_button.click()
-    except Exception:
+        time.sleep(1)
+        alerts = driver.find_elements(By.ID, "myAlert")
+        if alerts:
+            body_text = alerts[0].text.lower()
+            if "please enter the correct username" in body_text:
+                print("[ERR]  ❌ Login gagal. Pastikan username dan password benar!")
+                time.sleep(2)
+                driver.quit()
+                delNull()
+                # Countdown dengan animasi titik
+                for i in range(3, 0, -1):
+                    sys.stdout.write(f"\r[INFO] 🕒 Menutup aplikasi dalam {i} detik" + "." * (4 - i))
+                    sys.stdout.flush()
+                    time.sleep(1)
+                exit()
+        else:
+            stop_event = threading.Event()
+            spinner_thread = threading.Thread(target=spinner, args=(f"📄 Sedang memuat halaman", stop_event))
+            spinner_thread.start()
+            wait.until(EC.presence_of_element_located((By.ID, "divLayout")))
+            stop_event.set()
+            spinner_thread.join()
+            print("\n[INFO] 🎉 Halaman berhasil dimuat.")
+            
+    except Exception as e:
         print("\a")
-        print("[ERR]  ❌ Gagal klik tombol login.")
-        time.sleep(3)
-        driver.quit()
-        exit()
+        print(f"[ERR]  ❌ Error: {e}")
+        raise
 
     try:
-        print("[INFO] 🕵️ Menunggu elemen Clock In/Out...")
+        stop_event = threading.Event()
+        spinner_thread = threading.Thread(target=spinner, args=(f"🕵️ Mencari elemen Clock In/Out", stop_event))
+        spinner_thread.start()
         man_swipe = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "ManSwipe")))
-        history = wait.until(EC.element_to_be_clickable((By.XPATH, "//span[text()='History']")))
+        history = wait.until(EC.element_to_be_clickable((By.XPATH, "//span[text()='History']")))    
         
-        # Scroll biar elemen terlihat di layar
-        driver.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", man_swipe)
+        try:
+            # Scroll biar elemen terlihat di layar
+            driver.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", man_swipe)
+        except Exception:
+            raise # Naikan ulang error biar ketangkap di outer try-except
+
         time.sleep(1)  # Delay dikit biar efek scroll kelihatan
-        man_swipe.click()
-        print("[INFO] 👆 Berhasil klik Tombol Clock In/Out!")
+
+        try:
+            man_swipe.click()
+            stop_event.set()
+            spinner_thread.join()
+            print("\n[INFO] 👆 Berhasil klik Tombol Clock In/Out!")
+        except Exception:
+            print("\n[ERR]  ❌ Gagal menemukan atau klik elemen 'ManSwipe' / tombol Clock In/Out.")
+            raise
+
         time.sleep(2)  # Delay dikit tunggu presensi kesimpan
-        history.click()
-        print("[INFO] 📋 Berhasil menampilkan history presensi!")
+
+        try:
+            history.click()
+            print("[INFO] 📋 Berhasil menampilkan history presensi!")
+        except Exception:
+            print("[ERR]  ❌ Gagal menemukan tombol History.")
+            raise
+
         time.sleep(1)  # Delay dikit biar ada waktu buat user baca history
 
         # Animasi titik-titik selama 1,5 detik
@@ -214,19 +256,14 @@ def main():
             sys.stdout.write(f"\r[INFO] 🕒 Menutup aplikasi dalam {i} detik" + "." * (4 - i))
             sys.stdout.flush()
             time.sleep(1)
-            
-        # print("[INFO] 🕒 Menutup aplikasi dalam 3 detik", end="", flush=True)
-        # Animasi titik-titik selama 1,5 detik
-        # for _ in range(3):
-        #     time.sleep(0.5)
-        #     sys.stdout.write(".")
-        #     sys.stdout.flush()
-        # Jeda ladgi 1,5 detik biar pas 3 detik
+
         time.sleep(1.5)
         exit()
-        
+    
     except Exception:
-        print("[ERR]  ❌ Gagal menemukan atau klik elemen 'ManSwipe' / tombol Clock In/Out. Pastikan login sukses.\a")
+        stop_event.set()
+        spinner_thread.join()
+        print("\n[ERR]  ❌ Gagal menemukan tombol Clock In/Out. Pastikan menggunakan Bahasa Inggris!\a")
         driver.quit()
         delNull()
         # Countdown dengan animasi titik
@@ -234,14 +271,6 @@ def main():
             sys.stdout.write(f"\r[INFO] 🕒 Menutup aplikasi dalam {i} detik" + "." * (4 - i))
             sys.stdout.flush()
             time.sleep(1)
-        # print("🕒 Menutup aplikasi dalam 3 detik", end="", flush=True)
-        # Animasi titik-titik selama 1,5 detik
-        # for _ in range(3):
-        #     time.sleep(0.5)
-        #     sys.stdout.write(".")
-        #     sys.stdout.flush()
-        # Jeda ladgi 1,5 detik biar pas 3 detik
-        # time.sleep(1.5)
         exit()
 
     time.sleep(5)
@@ -261,7 +290,7 @@ except KeyboardInterrupt:
             print("[WARN] ⛔ Proses dibatalkan oleh pengguna.")
             exit()
         else:
-            print("[INFO] ✅ Proses akan dilanjutkan...\n")
+            print("[INFO] ✅ Proses akan dilanjutkan\n")
             main()  # Jalankan ulang
     except Exception:
         print("[ERR]  ❌ Terjadi kesalahan saat konfirmasi. Keluar.")

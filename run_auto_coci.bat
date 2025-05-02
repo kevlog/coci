@@ -89,7 +89,7 @@ if exist "C:\coci\src\auto_coci.py" (
 
 :getScriptPath
 set "inputScript="
-set /p "inputScript=📁 Masukkan DIREKTORI tempat auto_coci.py (contoh: C:\Users\ASUS-TUF\Desktop\coci): "
+set /p "inputScript=📁 Masukkan lokasi 'run_auto_coci.bat' (contoh: C:\Users\ASUS-TUF\Desktop\coci): "
 
 REM Trim spasi dari input (optional tapi bagus)
 for /f "tokens=* delims= " %%i in ("%inputScript%") do set "inputScript=%%i"
@@ -137,7 +137,7 @@ python "src\update_password.py"
 
 :run_script
 REM Load .env and extract SCRIPT_PATH
-echo [INFO] 🔄 Mengambil konfigurasi dari: %envPath%
+echo [INFO] 🔃 Mengambil konfigurasi dari: %envPath%
 set "SCRIPT_PATH="
 
 REM Ambil variabel dari file .env

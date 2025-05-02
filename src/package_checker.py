@@ -61,7 +61,7 @@ def install_if_missing(pip_package, import_name=None):
 # Fungsi untuk memeriksa dan menginstal semua paket yang diperlukan
 def check_and_install_packages(required_packages):
     print(f"[INFO] 📂 Using Python at: {sys.executable}")
-    print("[INFO] 🔍 Memeriksa paket yang diperlukan...")
+    print("[INFO] 🔍 Memeriksa paket yang diperlukan")
     # Memeriksa koneksi internet hingga tersedia
     while not check_internet_connection():
         print("[ERR]  ❌ Tidak ada koneksi internet. Harap periksa koneksi Anda dan coba lagi.\a")
