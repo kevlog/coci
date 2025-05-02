@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.1](https://github.com/kevlog/coci/compare/v1.9.0...v1.9.1) (2025-05-02)
+
+
+### Bug Fixes
+
+* improve login logic and standardize output formatting across modules ([9546295](https://github.com/kevlog/coci/commit/9546295839712595e065fb28448454f07f094c84))
+
 ## [1.9.0](https://github.com/kevlog/coci/compare/v1.8.4...v1.9.0) (2025-05-02)
 
 
