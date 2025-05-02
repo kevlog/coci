@@ -3,6 +3,7 @@ import os
 import threading
 import time
 import itertools
+import shutil
 from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.edge.service import Service as EdgeService
@@ -89,27 +90,40 @@ options.add_argument('--disable-gpu') # Disable GPU acceleration
 
 # === Fungsi utama ===
 def main():
+    # Tentukan lokasi custom untuk driver
+    custom_driver_path = "./assets/driver"
+    os.makedirs(custom_driver_path, exist_ok=True)  # Buat folder jika belum ada
+    driver_filename = "msedgedriver.exe"  # Nama file driver
+    custom_driver_file = os.path.join(custom_driver_path, driver_filename)
+
     # Inisialisasi driver Microsoft Edge
     try:
-        # Cek apakah driver sudah ada di folder .msedgedriver
-        stop_event = threading.Event()
-        spinner_thread = threading.Thread(target=spinner, args=(f"🔍 Mencari driver di folder .msedgedriver", stop_event))
-        spinner_thread.start()
-        driver_path = EdgeChromiumDriverManager().install()
-        stop_event.set()
-        spinner_thread.join()
-        if not os.path.exists(driver_path):
-            raise FileNotFoundError(f"Driver tidak ditemukan di path: {driver_path}")
-        print(f"\n[INFO] ✅ Driver ditemukan di: {driver_path}")
+        # Validasi apakah folder dan file driver sudah ada
+        if os.path.exists(custom_driver_file):
+            print(f"[INFO] ✅ Driver ditemukan di : {custom_driver_path}")
+        else:
+            print("[INFO] 🙏 Driver tidak ditemukan")
+            stop_event = threading.Event()
+            spinner_thread = threading.Thread(target=spinner, args=(f"🔄 Mengunduh driver", stop_event))
+            spinner_thread.start()
+
+            # Unduh driver menggunakan webdriver-manager
+            driver_path = EdgeChromiumDriverManager().install()
+            stop_event.set()
+            spinner_thread.join()
+
+            # Pindahkah driver ke folder custom
+            shutil.move(driver_path, custom_driver_path)
+            print(f"\n[INFO] ✅ Driver berhasil diunduh dan dipindahkan ke: {custom_driver_path}")
     except Exception as e:
         stop_event.set()
         spinner_thread.join()
         print(f"[ERR]  ❌ Gagal mengunduh atau memvalidasi driver. Detail: {e}\a")
         exit()
 
-    # Set opsi
+    # Inisialisasi driver
     try:
-        service = EdgeService(executable_path=driver_path)
+        service = EdgeService(executable_path=custom_driver_file)
         driver = webdriver.Edge(service=service, options=options)
         print("[INFO] 🚑 Driver berhasil dijalankan.")
     except Exception as e:
