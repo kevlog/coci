@@ -38,7 +38,12 @@ Otomatisasi absensi PeoplesHR via browser Microsoft Edge.
 
 - Pastikan PeoplesHR menggunakan bahasa Inggris.
 - Menggunakan browser Microsoft Edge.
+- Aplikasi akan otomatis mengunduh Python jika komputermu belum terinstall Python.
+- Setelah proses unduh Python selesai, maka file installer Python akan otomatis dijalankan, silahkan install mandiri dengan klik tombol next-next seperti proses instalasi software pada umumnya.
+- Setelah proses unduh Python selesai, file instalasi akan otomatis dihapus ketika kamu tekan tombol enter saat muncul tulisan "Press any key to continue". Hal ini dimaksudkan agar tidak menggunakan banyak memori penyimpanan.
+- Oleh karena itu, segera lakukan instalasi ketika installer sudah dijalankan, atau tutup aplikasi Auto CoCi setelah proses instalasi Python selesai.
 - Aplikasi akan otomatis mengunduh dan menginstall webdriver dari Mirosoft Edge jika tidak ditemukan.
+- Setelah driver terunduh, akan dipindahkan ke dalam folder assets/driver.
 - Jika ingin memindahkan `run_auto_coci.bat`, **wajib buat shortcut**, bukan di-_copy_ ke tempat lain.
 - Shortcut bisa kamu taruh di mana saja.
 - Bisa dijalankan secara otomatis menggunakan scheduler Windows.
