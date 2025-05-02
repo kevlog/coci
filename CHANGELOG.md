@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/kevlog/coci/compare/v1.8.4...v1.9.0) (2025-05-02)
+
+
+### Features
+
+* implement auto-download and validation for Edge driver ([f3f36ae](https://github.com/kevlog/coci/commit/f3f36ae0e44b82e7532785db0fe07158f8e0c305))
+
 ## [1.8.4](https://github.com/kevlog/coci/compare/v1.8.3...v1.8.4) (2025-04-30)
 
 
