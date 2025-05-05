@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/kevlog/coci/compare/v1.9.1...v1.10.0) (2025-05-05)
+
+
+### Features
+
+* add KeyboardInterrupt handling for install and main process ([213e0a3](https://github.com/kevlog/coci/commit/213e0a3ffe577ea191384dfcda6e1a26133615b7))
+
 ## [1.9.1](https://github.com/kevlog/coci/compare/v1.9.0...v1.9.1) (2025-05-02)
 
 
