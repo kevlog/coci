@@ -12,7 +12,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.edge.service import Service as EdgeService
-from selenium.webdriver.edge.options import Options
+from selenium.common.exceptions import NoSuchWindowException
+from selenium.common.exceptions import InvalidSessionIdException
+from urllib3.exceptions import ProtocolError
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from dotenv import load_dotenv
 from read_password import load_access
@@ -177,9 +179,69 @@ def main():
     try:
         print("[INFO] ➡️ Menekan tombol login")
         login_button = driver.find_element(By.ID, "btnsubmit")
-        login_button.click()
-        time.sleep(1)
-        alerts = driver.find_elements(By.ID, "myAlert")
+        try:
+            login_button.click()
+            time.sleep(1)
+        except NoSuchWindowException:
+            driver.quit()
+            print("\n[ERR]  ❌ Browser telah ditutup secara paksa. Program akan dihentikan.\a")
+            delNull()
+            # Countdown dengan animasi titik
+            for i in range(3, 0, -1):
+                sys.stdout.write(f"\r[INFO] 🕒 Menutup aplikasi dalam {i} detik" + "." * (4 - i))
+                sys.stdout.flush()
+                time.sleep(1)
+            exit()
+        except Exception as e:
+            print(f"[ERR]  ❌Gagal klik tombol login.")
+            raise
+
+        try:
+            alerts = driver.find_elements(By.ID, "myAlert")
+        except NoSuchWindowException:
+            driver.quit()
+            print("\n[ERR]  ❌ Browser telah ditutup secara paksa. Program akan dihentikan.\a")
+            delNull()
+            # Countdown dengan animasi titik
+            for i in range(3, 0, -1):
+                sys.stdout.write(f"\r[INFO] 🕒 Menutup aplikasi dalam {i} detik" + "." * (4 - i))
+                sys.stdout.flush()
+                time.sleep(1)
+            exit()
+        
+        except ProtocolError as e:
+            print(f"\n[ERR]  ❌ Koneksi terputus: {e}")
+            delNull()
+            exit()
+        
+        except ConnectionResetError as e:
+            driver.quit()
+            print(f"\n[ERR]  ❌ Koneksi terputus oleh host: {e}")
+            delNull()
+            exit()
+        
+        except InvalidSessionIdException as e:
+            print("[ERR]  ❌ Invalid Session Id Exception, kemungkinan karena Browser ditutup paksa.")
+            print(f"[ERR]  📝 Detail error:\n {e}")
+            delNull()
+            # Countdown dengan animasi titik
+            for i in range(15, 0, -1):
+                sys.stdout.write(f"\r[INFO] 🕒 Menutup aplikasi dalam {i} detik ")
+                sys.stdout.flush()
+                time.sleep(1)
+            exit()
+
+        except Exception as e:
+            print(f"\n[ERR]  ❌ Error: {e}")
+            delNull()
+            # Countdown dengan animasi titik
+            for i in range(3, 0, -1):
+                sys.stdout.write(f"\r[INFO] 🕒 Menutup aplikasi dalam {i} detik" + "." * (4 - i))
+                sys.stdout.flush()
+                time.sleep(1)
+            exit()
+
+
         if alerts:
             body_text = alerts[0].text.lower()
             if "please enter the correct username" in body_text:
@@ -194,18 +256,135 @@ def main():
                     time.sleep(1)
                 exit()
         else:
-            stop_event = threading.Event()
-            spinner_thread = threading.Thread(target=spinner, args=(f"📄 Sedang memuat halaman", stop_event))
-            spinner_thread.start()
-            wait.until(EC.presence_of_element_located((By.ID, "divLayout")))
-            stop_event.set()
-            spinner_thread.join()
-            print("\n[INFO] 🎉 Halaman berhasil dimuat.")
+            try:
+                stop_event = threading.Event()
+                spinner_thread = threading.Thread(target=spinner, args=(f"📄 Sedang memuat halaman", stop_event))
+                spinner_thread.start()
+
+                # Tunggu hingga elemen halaman berhasil dimuat
+                wait.until(EC.presence_of_element_located((By.ID, "divLayout")))
+
+                stop_event.set()
+                spinner_thread.join()
+                print("\n[INFO] 🎉 Halaman berhasil dimuat.")
+
+            except NoSuchWindowException:
+                driver.quit()
+                stop_event.set()
+                spinner_thread.join()
+                print("\n[ERR]  ❌ Browser telah ditutup secara paksa. Program akan dihentikan.\a")
+                delNull()
+                # Countdown dengan animasi titik
+                for i in range(3, 0, -1):
+                    sys.stdout.write(f"\r[INFO] 🕒 Menutup aplikasi dalam {i} detik" + "." * (4 - i))
+                    sys.stdout.flush()
+                    time.sleep(1)
+                exit()
+            
+            except ProtocolError as e:
+                driver.quit()
+                stop_event.set()
+                spinner_thread.join()
+                print(f"\n[ERR]  ❌ Koneksi terputus: {e}")
+                delNull()
+                # Countdown dengan animasi titik
+                for i in range(3, 0, -1):
+                    sys.stdout.write(f"\r[INFO] 🕒 Menutup aplikasi dalam {i} detik" + "." * (4 - i))
+                    sys.stdout.flush()
+                    time.sleep(1)
+                exit()
+            
+            except ConnectionResetError as e:
+                driver.quit()
+                stop_event.set()
+                spinner_thread.join()
+                print(f"\n[ERR]  ❌ Koneksi terputus oleh host: {e}")
+                delNull()
+                # Countdown dengan animasi titik
+                for i in range(3, 0, -1):
+                    sys.stdout.write(f"\r[INFO] 🕒 Menutup aplikasi dalam {i} detik" + "." * (4 - i))
+                    sys.stdout.flush()
+                    time.sleep(1)
+                exit()
+
+            except Exception as e:
+                driver.quit()
+                stop_event.set()
+                spinner_thread.join()
+                print(f"\n[ERR]  ❌ 1 Error: {e}")
+                delNull()
+                # Countdown dengan animasi titik
+                for i in range(3, 0, -1):
+                    sys.stdout.write(f"\r[INFO] 🕒 Menutup aplikasi dalam {i} detik" + "." * (4 - i))
+                    sys.stdout.flush()
+                    time.sleep(1)
+                exit()
+
+            except KeyboardInterrupt:
+                driver.quit()
+                stop_event.set()
+                spinner_thread.join()
+                print("\n[WARN] ⚠️ Program dihentikan oleh pengguna (CTRL+C).")
+                driver.quit()
+                delNull()
+                # Countdown dengan animasi titik
+                for i in range(3, 0, -1):
+                    sys.stdout.write(f"\r[INFO] 🕒 Menutup aplikasi dalam {i} detik" + "." * (4 - i))
+                    sys.stdout.flush()
+                    time.sleep(1)
+                exit()
+    
+    except NoSuchWindowException:
+        print("\n[ERR]  ❌ Browser telah ditutup secara paksa. Program akan dihentikan.\a")        
+        delNull()
+        # Countdown dengan animasi titik
+        for i in range(3, 0, -1):
+            sys.stdout.write(f"\r[INFO] 🕒 Menutup aplikasi dalam {i} detik" + "." * (4 - i))
+            sys.stdout.flush()
+            time.sleep(1)
+        exit()
+    
+    except ProtocolError as e:
+        print(f"\n[ERR]  ❌ Koneksi terputus: {e}")
+        delNull()
+        # Countdown dengan animasi titik
+        for i in range(3, 0, -1):
+            sys.stdout.write(f"\r[INFO] 🕒 Menutup aplikasi dalam {i} detik" + "." * (4 - i))
+            sys.stdout.flush()
+            time.sleep(1)
+        exit()
+    
+    except ConnectionResetError as e:
+        print(f"\n[ERR]  ❌ Koneksi terputus oleh host: {e}")
+        delNull()
+        # Countdown dengan animasi titik
+        for i in range(3, 0, -1):
+            sys.stdout.write(f"\r[INFO] 🕒 Menutup aplikasi dalam {i} detik" + "." * (4 - i))
+            sys.stdout.flush()
+            time.sleep(1)
+        exit()
+    
+    except InvalidSessionIdException as e:
+        print(f"\n[ERR]  ❌ Invalid Session Id Exception caught: {e}")
+        delNull()
+        # Countdown dengan animasi titik
+        for i in range(3, 0, -1):
+            sys.stdout.write(f"\r[INFO] 🕒 Menutup aplikasi dalam {i} detik" + "." * (4 - i))
+            sys.stdout.flush()
+            time.sleep(1)
+        exit()
             
     except Exception as e:
         print("\a")
         print(f"[ERR]  ❌ Error: {e}")
-        raise
+        driver.quit()
+        delNull()
+        # Countdown dengan animasi titik
+        for i in range(3, 0, -1):
+            sys.stdout.write(f"\r[INFO] 🕒 Menutup aplikasi dalam {i} detik" + "." * (4 - i))
+            sys.stdout.flush()
+            time.sleep(1)
+        exit()
 
     try:
         stop_event = threading.Event()
@@ -278,20 +457,22 @@ def main():
     exit()
 
 # === Eksekusi dengan handler Ctrl+C ===
-try:
-    main()
-except KeyboardInterrupt:
-    print("\n[WARN] ⚠️  Deteksi interupsi dari keyboard (Ctrl+C).")
+while True:
     try:
-        confirm = input("❓ Yakin ingin membatalkan proses? (y/n): ").lower()
-        if confirm == 'y':
-            print("\a")
-            delNull()
-            print("[WARN] ⛔ Proses dibatalkan oleh pengguna.")
+        main()
+        break # Keluar dari loop jika main() selesai tanpa error
+    except KeyboardInterrupt:
+        print("\n[WARN] ⚠️  Deteksi interupsi dari keyboard (Ctrl+C).")
+        try:
+            confirm = input("❓ Yakin ingin membatalkan proses? (y/n): ").lower()
+            if confirm == 'y':
+                print("\a")
+                delNull()
+                print("[WARN] ⛔ Proses dibatalkan oleh pengguna.")
+                exit()
+            else:
+                print("[INFO] ✅ Proses akan dilanjutkan\n")
+                main()  # Jalankan ulang
+        except Exception:
+            print("[ERR]  ❌ Terjadi kesalahan saat konfirmasi. Keluar.")
             exit()
-        else:
-            print("[INFO] ✅ Proses akan dilanjutkan\n")
-            main()  # Jalankan ulang
-    except Exception:
-        print("[ERR]  ❌ Terjadi kesalahan saat konfirmasi. Keluar.")
-        exit()
