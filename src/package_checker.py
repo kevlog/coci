@@ -99,6 +99,11 @@ def check_and_install_packages(required_packages):
                 stop_event.set()
                 spinner_thread.join()
                 print(f"\n[INFO] 🎁 Berhasil menginstal package: {package} dalam {duration} detik.\n")
+            except KeyboardInterrupt:
+                stop_event.set()
+                spinner_thread.join()
+                print("\n[WARN] ⚠️ Instalasi dihentikan oleh pengguna (Ctrl+C).")
+                exit()
             except subprocess.CalledProcessError as e:
                 stop_event.set()
                 spinner_thread.join()
@@ -111,4 +116,22 @@ def main():
     path = get_path()
     check_and_install_packages(load_required_packages(path))
 
-main()
+while True:
+    try:
+        main()
+        break # Keluar dari loop jika main() selesai tanpa error
+    except KeyboardInterrupt:
+        print("\n[WARN] ⚠️  Deteksi interupsi dari keyboard (Ctrl+C).")
+        try:
+            confirm = input("❓ Yakin ingin membatalkan proses? (y/n): ").lower()
+            if confirm == 'y':
+                print("\a")
+                delNull()
+                print("[WARN] ⛔ Proses dibatalkan oleh pengguna.")
+                exit()
+            else:
+                print("[INFO] ✅ Proses akan dilanjutkan\n")
+                main()  # Jalankan ulang
+        except Exception:
+            print("[ERR]  ❌ Terjadi kesalahan saat konfirmasi. Keluar.")
+            exit()
