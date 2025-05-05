@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/kevlog/coci/compare/v1.10.0...v1.11.0) (2025-05-05)
+
+
+### Features
+
+* add exception handling for browser and connection errors ([9cf2435](https://github.com/kevlog/coci/commit/9cf2435619de5119255e237a69a7ba31db94c6af))
+
 ## [1.10.0](https://github.com/kevlog/coci/compare/v1.9.1...v1.10.0) (2025-05-05)
 
 
