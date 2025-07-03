@@ -2,37 +2,18 @@ import sys
 import os
 import threading
 import time
-import itertools
-import shutil
 from datetime import datetime
-from selenium import webdriver
-from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.edge.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.common.exceptions import NoSuchWindowException
 from selenium.common.exceptions import InvalidSessionIdException
 from urllib3.exceptions import ProtocolError
-from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from dotenv import load_dotenv
 from read_password import load_access
-
-# Spinner
-def spinner(text, stop_event):
-    dots = itertools.cycle(['.', '..', '...'])
-    space = itertools.cycle(['   '])
-    frame = 0
-    dot = next(dots)
-
-    while not stop_event.is_set():
-        if frame % 5 == 0:
-            dot = next(dots)
-        sys.stdout.write(f'\r[INFO] {text}{dot}{next(space)}')
-        sys.stdout.flush()
-        time.sleep(0.1)
-        frame += 1
+from driver_setup import setup_driver
+from spinner import spinner
 
 # === Path ke file null ===
 def delNull():
@@ -92,45 +73,12 @@ options.add_argument('--disable-gpu') # Disable GPU acceleration
 
 # === Fungsi utama ===
 def main():
-    # Tentukan lokasi custom untuk driver
-    custom_driver_path = "./assets/driver"
-    os.makedirs(custom_driver_path, exist_ok=True)  # Buat folder jika belum ada
-    driver_filename = "msedgedriver.exe"  # Nama file driver
-    custom_driver_file = os.path.join(custom_driver_path, driver_filename)
+    # Siapkan opsi browser jika perlu
+    options = Options()
+    options.add_argument("--start-maximized")
 
-    # Inisialisasi driver Microsoft Edge
-    try:
-        # Validasi apakah folder dan file driver sudah ada
-        if os.path.exists(custom_driver_file):
-            print(f"[INFO] ✅ Driver ditemukan di : {custom_driver_path}")
-        else:
-            print("[INFO] 🙏 Driver tidak ditemukan")
-            stop_event = threading.Event()
-            spinner_thread = threading.Thread(target=spinner, args=(f"🔄 Mengunduh driver", stop_event))
-            spinner_thread.start()
-
-            # Unduh driver menggunakan webdriver-manager
-            driver_path = EdgeChromiumDriverManager().install()
-            stop_event.set()
-            spinner_thread.join()
-
-            # Pindahkah driver ke folder custom
-            shutil.move(driver_path, custom_driver_path)
-            print(f"\n[INFO] ✅ Driver berhasil diunduh dan dipindahkan ke: {custom_driver_path}")
-    except Exception as e:
-        stop_event.set()
-        spinner_thread.join()
-        print(f"[ERR]  ❌ Gagal mengunduh atau memvalidasi driver. Detail: {e}\a")
-        exit()
-
-    # Inisialisasi driver
-    try:
-        service = EdgeService(executable_path=custom_driver_file)
-        driver = webdriver.Edge(service=service, options=options)
-        print("[INFO] 🚑 Driver berhasil dijalankan.")
-    except Exception as e:
-        print(f"[ERR]  ❌ Gagal menginisialisasi driver. Detail: {e}\a")
-        exit()
+    # Inisialisasi driver lewat function modular
+    driver = setup_driver(options)
 
     print("[INFO] ⌚ Menjalankan Auto Clock-In / Clock-Out")
     
