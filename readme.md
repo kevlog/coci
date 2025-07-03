@@ -95,6 +95,26 @@ Tenang aja, aplikasi akan secara otomatis mengunduh WebDriver berdasarkan versi 
 
 ---
 
+## ✅ Tested On
+
+This application has been tested and verified to work properly on the following system configuration:
+
+| Component                 | Details                                         |
+|---------------------------|-------------------------------------------------|
+| OS                        | Windows 11 (Build 26100)                        |
+| Processor                 | Intel Core i5 (64-bit)                          |
+| Architecture              | 64-bit                                          |
+| Python Version            | 3.13.3                                          |
+| Microsoft Edge Version    | 138.0.3351.65 (Stable)                          |
+| Selenium Version          | 4.33.0                                          |
+| webdriver-manager Version | 138.0.3351.65                                   |
+| IDE                       | Visual Studio Code                              |
+| Terminal                  | cmd.exe                                         |
+
+> ℹ️ Note: Compatibility with other systems or Edge versions may vary.
+
+---
+
 ## 🔗 Referensi
 
 - 📝 [1] [Microsoft Edge | Pengumuman Penghentian Internet Explorer](https://learn.microsoft.com/id-id/shows/it-ops-talk/microsoft-edge--internet-explorer-retirement-announcement)
