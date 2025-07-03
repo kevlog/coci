@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.0](https://github.com/kevlog/coci/compare/v1.11.0...v1.12.0) (2025-07-03)
+
+
+### Features
+
+* **driver:** separate driver setup and add version validation ([2717722](https://github.com/kevlog/coci/commit/2717722075597eca3a09eb31b69278504d714ef5))
+
 ## [1.11.0](https://github.com/kevlog/coci/compare/v1.10.0...v1.11.0) (2025-05-05)
 
 
