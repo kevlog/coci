@@ -122,3 +122,8 @@ This application has been tested and verified to work properly on the following 
 - 🌐 [Download Microsoft Edge](https://www.microsoft.com/id-id/edge/download?form=MA13FJ)
 - ⚙️ [Download Edge WebDriver](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/?form=MA13LH#installation)
 - 📚 [Dokumentasi Edge WebDriver](https://learn.microsoft.com/en-us/microsoft-edge/webdriver-chromium/?tabs=c-sharp&form=MA13LH)
+
+## 🆕 Last Update
+
+📅 15 Juli 2025  
+🔗 [Lihat Changelog](./CHANGELOG.md)
