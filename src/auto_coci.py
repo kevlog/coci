@@ -73,10 +73,7 @@ options.add_argument('--disable-gpu') # Disable GPU acceleration
 
 # === Fungsi utama ===
 def main():
-    # Siapkan opsi browser jika perlu
-    options = Options()
-    options.add_argument("--start-maximized")
-
+    
     # Inisialisasi driver lewat function modular
     driver = setup_driver(options)
 
