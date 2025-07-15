@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.1](https://github.com/kevlog/coci/compare/v1.12.0...v1.12.1) (2025-07-15)
+
+
+### Bug Fixes
+
+* ensure browser options (including --inprivate) are correctly applied ([12b91fb](https://github.com/kevlog/coci/commit/12b91fb1999669311e458de071af9921c306e21a))
+
 ## [1.12.0](https://github.com/kevlog/coci/compare/v1.11.0...v1.12.0) (2025-07-03)
 
 
