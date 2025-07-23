@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/kevlog/coci/compare/v1.13.0...v1.14.0) (2025-07-23)
+
+
+### Features
+
+* update Python version to 3.13.5 ([93624a4](https://github.com/kevlog/coci/commit/93624a491e40b1c6369c7562d4d7cdb83945d7f6))
+
 ## [1.13.0](https://github.com/kevlog/coci/compare/v1.12.1...v1.13.0) (2025-07-23)
 
 
