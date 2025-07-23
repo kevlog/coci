@@ -104,7 +104,7 @@ This application has been tested and verified to work properly on the following 
 | OS                        | Windows 11 (Build 26100)                        |
 | Processor                 | Intel Core i5 (64-bit)                          |
 | Architecture              | 64-bit                                          |
-| Python Version            | 3.13.3                                          |
+| Python Version            | 3.13.5                                          |
 | Microsoft Edge Version    | 138.0.3351.65 (Stable)                          |
 | Selenium Version          | 4.33.0                                          |
 | webdriver-manager Version | 138.0.3351.65                                   |
