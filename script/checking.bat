@@ -3,7 +3,7 @@ setlocal enabledelayedexpansion
 
 :: ==========================================
 :: Konfigurasi: ubah ini untuk versi terbaru
-set "PYTHON_VERSION=3.13.3"
+set "PYTHON_VERSION=3.13.5"
 :: ==========================================
 
 echo [INFO] 🔍 Mengecek arsitektur sistem...
