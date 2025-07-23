@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/kevlog/coci/compare/v1.12.1...v1.13.0) (2025-07-23)
+
+
+### Features
+
+* update driver download logic when Microsoft WebDriver can't be accessed ([10a6a56](https://github.com/kevlog/coci/commit/10a6a56ad0855172129158a5fb737164553dc2aa))
+
 ## [1.12.1](https://github.com/kevlog/coci/compare/v1.12.0...v1.12.1) (2025-07-15)
 
 
